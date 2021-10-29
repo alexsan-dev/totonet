@@ -1,0 +1,8 @@
+{
+	"watch": ["src", "test"],
+	"ext": "ts,json,xml",
+	"ignore": ["*.test.ts"],
+	"execMap": {
+		"ts": "NODE_PATH=./src ts-node"
+	}
+}
