@@ -47,9 +47,9 @@ class DataService {
 					// DATOS TEMPORALES
 					const temp: TemporalData = getTemporalTables(resData)
 					await setTables(temp).catch(onError)
-					await setRelationTables(resData).catch(onError)
 
 					// INSERTAR EN MODELO PRINCIPAL
+					await setRelationTables(resData).catch(onError)
 
 					// SALIR
 					res.status(200).json({ success: true })

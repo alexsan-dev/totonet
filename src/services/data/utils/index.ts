@@ -184,6 +184,12 @@ export async function setTables<T>(
 	)
 }
 
+/**
+ * Crear tablas relacionales
+ * @description Crear tablas con llaves foraneas para completar las relaciones
+ * @param resData
+ * @returns
+ */
 export async function setRelationTables<T>(
 	resData: Data,
 ): Promise<(OracleDB.Result<T> | undefined)[]> {
