@@ -1,14 +1,14 @@
 // IMPORTS
 import { Controller } from 'models/global'
-import DataService from 'services/data'
+import AuthService from 'services/auth'
 
 // CONTROLADOR
 const dataController: Controller = (app) => {
 	// SERVICIOS
-	const service = new DataService(false, true)
+	const service = new AuthService()
 
 	// ENDPOINTS
-	app.post('/upload', service.upload)
+	app.post('/login', service.login)
 }
 
 export default dataController

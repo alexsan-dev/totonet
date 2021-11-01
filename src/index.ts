@@ -1,6 +1,7 @@
 // IMPORTS
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 // DB
 import startDb from 'utils/db'
@@ -12,7 +13,10 @@ import dataController from 'controllers/data'
 // APP
 const app = express()
 app.use(cors({ origin: '*' }))
+app.use(express.json())
 startDb()
+
+dotenv.config()
 
 // CONTROLADORES
 modelController(app)
