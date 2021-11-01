@@ -29,16 +29,13 @@ const withAuth =
 				if (err) return res.status(403).json({ success: false, msg: err })
 				else {
 					if (!role || role === (user as UserData).role) {
-						// @ts-ignore
-						req.user = user
+						req.body.user = user
 						next()
 					} else
-						return res
-							.status(403)
-							.json({
-								success: false,
-								msg: `El usuario debe ser ${role} para acceder a esta ruta.`,
-							})
+						return res.status(403).json({
+							success: false,
+							msg: `El usuario debe ser ${role} para acceder a esta ruta.`,
+						})
 				}
 			},
 		)

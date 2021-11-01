@@ -9,6 +9,7 @@ const dataController: Controller = (app) => {
 
 	// ENDPOINTS
 	app.post('/login', service.login)
+	app.post('/signing', service.signing)
 }
 
 export default dataController

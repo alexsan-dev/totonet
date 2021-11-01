@@ -67,3 +67,14 @@ CREATE TABLE ReqFormats (
   CONSTRAINT format_fk_c FOREIGN KEY (format_fk) REFERENCES Formats (format_id),
   CONSTRAINT req_f_fk_c FOREIGN KEY (req_fk) REFERENCES Requirements (requirement_id)
 );
+
+CREATE TABLE Users (
+  user_id NUMBER NOT NULL,
+  user_role VARCHAR2(250) NOT NULL,
+  user_name VARCHAR2(250) NOT NULL,
+  department_fk VARCHAR2(250),
+  password VARCHAR2(250) NOT NULL,
+  dateIn VARCHAR2(250) NOT NULL,
+  dateOut VARCHAR2(250),
+  CONSTRAINT department_user_fk FOREIGN KEY (department_fk) REFERENCES Departments (department_id)
+)
