@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import React from "react"
+import {RouteComponentProps} from 'react-router-dom'
 import verifyEmail from "../tools"
 
 // DATOS
@@ -8,7 +9,7 @@ export interface LoginData {
   password?: HTMLInputElement | boolean | string
 }
 
-const onSubmit = (ev: React.FormEvent<HTMLFormElement>, setErrs:React.Dispatch<React.SetStateAction<LoginData>>) => {
+const onSubmit = (ev: React.FormEvent<HTMLFormElement>, setErrs:React.Dispatch<React.SetStateAction<LoginData>>, history: RouteComponentProps['history']) => {
 		ev.preventDefault()
 
 		// DATOS
@@ -20,7 +21,7 @@ const onSubmit = (ev: React.FormEvent<HTMLFormElement>, setErrs:React.Dispatch<R
     setErrs(validData)
 
     if(!validData.email && !validData.password){
-      console.log(data)
+      history.push('/dashboard')
     }
 	}
 

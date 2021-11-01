@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
 
+import {useHistory} from 'react-router-dom'
+
 // MATERIAL
 import FormControlLabel from '@mui/material/FormControlLabel'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -34,11 +36,14 @@ const Login: React.FC = () => {
   // ERRORES
   const [errs, setErrs] = useState<LoginData>({email:false, password:false})
 
+  // ROUTER
+  const history = useHistory()
+
   // CAMBIAR TIPO DE INPUT
 	const changeVisible = () => setVisiblePass(!visiblePass)
 
 	// GUARDAR DATOS
-	const onSubmitHandler = (ev: React.FormEvent<HTMLFormElement>) => onSubmit(ev, setErrs)
+	const onSubmitHandler = (ev: React.FormEvent<HTMLFormElement>) => onSubmit(ev, setErrs, history)
 
 	return (
 		<main>
