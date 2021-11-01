@@ -3,10 +3,11 @@ import express from 'express'
 import cors from 'cors'
 
 // DB
-import { startDb } from 'utils/db'
+import startDb from 'utils/db'
 
 // CONTROLLERS
 import modelController from 'controllers/model'
+import dataController from 'controllers/data'
 
 // APP
 const app = express()
@@ -15,6 +16,7 @@ startDb()
 
 // CONTROLADORES
 modelController(app)
+dataController(app)
 
 // INICIAR APP
 app.listen(5000, () => {

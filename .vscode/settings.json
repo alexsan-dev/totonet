@@ -1,0 +1,4 @@
+{
+	"cSpell.ignoreWords": ["categorie"],
+	"typescript.tsdk": "node_modules/typescript/lib"
+}
