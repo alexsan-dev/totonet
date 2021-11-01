@@ -1,10 +1,10 @@
 // IMPORTS
 import getTemporalTables, { setRelationTables, setTables } from './utils'
 import { Data, TemporalData } from 'models/data'
+import { executeScript } from 'utils/db'
 import express from 'express'
 import xml2js from 'xml-js'
 import fs from 'fs'
-import { executeScript } from 'utils/db'
 
 class DataService {
 	// CONSTRUCTOR

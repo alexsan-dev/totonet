@@ -1,7 +1,6 @@
 import { Data, PrimaryData, TemporalData } from 'models/data'
-//import { getConnection } from 'utils/db'
-import OracleDB from 'oracledb'
 import { execute } from 'utils/db'
+import OracleDB from 'oracledb'
 
 /**
  * Tablas temporales
