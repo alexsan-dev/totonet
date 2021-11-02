@@ -9,7 +9,7 @@ const dataController: Controller = (app) => {
 	const service = new DataService()
 
 	// ENDPOINTS
-	app.post('/upload', withAuth, service.upload)
+	app.post('/upload', withAuth('admin'), service.upload)
 }
 
 export default dataController

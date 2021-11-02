@@ -8,8 +8,8 @@ import express from 'express'
 class AuthService {
 	constructor() {
 		this.getUser = this.getUser.bind(this)
-		this.login = this.login.bind(this)
 		this.signing = this.signing.bind(this)
+		this.login = this.login.bind(this)
 	}
 
 	/**
@@ -35,13 +35,21 @@ class AuthService {
 					? `INSERT INTRO Users (user_id, user_role, user_name, department_fk, password, dateIn) VALUES (
 					users_seq, ${user?.role}, ${user?.name}, (SELECT department_id FROM Departments WHERE department_name = '${user?.department}'), ${user?.password}, ${user?.dateIn}
 					)`
-					: `SELECT user_id, user_role FROM Users WHERE user_name = '${user?.name}'`,
+					: `SELECT user_id, user_role, password FROM Users WHERE user_name = '${user?.name}'`,
 			).catch((err) => {
 				hasErr = true
 				res.json({ success: false, msg: err })
 			})) as OracleDB.Result<unknown>
 
-			if (((query.rows && query.rows.length) || isNew) && !hasErr && user) {
+			if (
+				((query.rows &&
+					query.rows.length &&
+					// @ts-ignore
+					query.rows?.[0][2] === user.password) ||
+					isNew) &&
+				!hasErr &&
+				user
+			) {
 				return res.json({
 					success: true,
 					// @ts-ignore

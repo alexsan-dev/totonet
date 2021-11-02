@@ -3,7 +3,7 @@ import { Controller } from 'models/global'
 import AuthService from 'services/auth'
 
 // CONTROLADOR
-const autController: Controller = (app) => {
+const authController: Controller = (app) => {
 	// SERVICIOS
 	const service = new AuthService()
 
@@ -12,4 +12,4 @@ const autController: Controller = (app) => {
 	app.post('/signing', service.signing)
 }
 
-export default autController
+export default authController
