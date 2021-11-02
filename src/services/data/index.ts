@@ -65,9 +65,7 @@ class DataService {
 					.status(404)
 					.json({ success: false, msg: `Error al leer el archivo xml` })
 			} else {
-				// TODO: Ejecutar carga masiva
-				// await setData(xml).catch(onError)
-				console.log(xml)
+				await setData(xml).catch(onError)
 			}
 		}
 	}

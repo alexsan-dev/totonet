@@ -58,7 +58,7 @@ export async function executeScript<T>(
 					.toString()
 					.split(';')
 					.map(async (query) => {
-						const parsed = query.replace(/[^a-zA-Z\(\) ,_\d]/g, '')
+						const parsed = query.replace(/[^a-zA-Z\(\) ,_\d\']/g, '')
 						if (parsed.length) {
 							const result = await db.execute(parsed).catch(reject)
 							return result

@@ -72,9 +72,15 @@ CREATE TABLE Users (
   user_id NUMBER NOT NULL,
   user_role VARCHAR2(250) NOT NULL,
   user_name VARCHAR2(250) NOT NULL,
-  department_fk VARCHAR2(250),
+  department_fk NUMBER,
   password VARCHAR2(250) NOT NULL,
-  dateIn VARCHAR2(250) NOT NULL,
+  dateIn VARCHAR2(250),
   dateOut VARCHAR2(250),
+  PRIMARY KEY(user_id),
   CONSTRAINT department_user_fk FOREIGN KEY (department_fk) REFERENCES Departments (department_id)
-)
+);
+
+CREATE SEQUENCE users_seq START WITH 2 INCREMENT BY 1 CACHE 100;
+
+INSERT INTO Users VALUES (1, 'admin', 'admin', NULL, 'admin', NULL, NULL);
+COMMIT;

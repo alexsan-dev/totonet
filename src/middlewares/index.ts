@@ -10,20 +10,24 @@ import jwt from 'jsonwebtoken'
  * @param next
  * @returns
  */
-const withAuth =
-	(role?: UserData['role']) =>
-	(req: express.Request, res: express.Response, next: express.NextFunction) => {
-		// OBTENER TOKEN
-		const authHeader = req.headers['authorization']
-		const token = authHeader && authHeader.split(' ')[1]
+const withAuth = (
+	req: express.Request,
+	res: express.Response,
+	next: express.NextFunction,
+) => {
+	// OBTENER TOKEN
+	const token = req.headers['authorization']
 
-		// ERROR SIN TOKEN
-		if (token == null)
-			return res.status(401).json({ success: false, msg: 'Token invalido' })
+	// ROLE
+	const { role } = req.body.user
 
-		// VERIFICAR
+	// ERROR SIN TOKEN
+	if (token === null)
+		return res.status(401).json({ success: false, msg: 'Token invalido' })
+	// VERIFICAR
+	else {
 		jwt.verify(
-			token,
+			token || '',
 			process.env.TOKEN_SECRET as string,
 			(err: unknown, user: unknown) => {
 				if (err) return res.status(403).json({ success: false, msg: err })
@@ -40,5 +44,6 @@ const withAuth =
 			},
 		)
 	}
+}
 
 export default withAuth

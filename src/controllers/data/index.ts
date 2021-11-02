@@ -1,6 +1,7 @@
 // IMPORTS
 import { Controller } from 'models/global'
 import DataService from 'services/data'
+import withAuth from 'middlewares'
 
 // CONTROLADOR
 const dataController: Controller = (app) => {
@@ -8,7 +9,7 @@ const dataController: Controller = (app) => {
 	const service = new DataService()
 
 	// ENDPOINTS
-	app.post('/upload', service.upload)
+	app.post('/upload', withAuth, service.upload)
 }
 
 export default dataController

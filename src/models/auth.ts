@@ -3,6 +3,6 @@ export interface UserData {
 	department?: string
 	password: string
 	role: 'admin'
-	dateIn: Date
-	dateOut?: Date
+	dateIn: string
+	dateOut?: string
 }

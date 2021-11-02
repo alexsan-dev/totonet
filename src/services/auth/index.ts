@@ -6,6 +6,12 @@ import jwt from 'jsonwebtoken'
 import express from 'express'
 
 class AuthService {
+	constructor() {
+		this.getUser = this.getUser.bind(this)
+		this.login = this.login.bind(this)
+		this.signing = this.signing.bind(this)
+	}
+
 	/**
 	 * Obtener usuario
 	 * @description Validar usuario
@@ -20,30 +26,37 @@ class AuthService {
 		isNew: boolean = false,
 	) {
 		// DATA
-		const user = req.body.user as UserData
+		const user = req.body.user as UserData | undefined
+		let hasErr: boolean = false
+		if (user) {
+			// VALIDAR USUARIO
+			const query = (await execute(
+				isNew
+					? `INSERT INTRO Users (user_id, user_role, user_name, department_fk, password, dateIn) VALUES (
+					users_seq, ${user?.role}, ${user?.name}, (SELECT department_id FROM Departments WHERE department_name = '${user?.department}'), ${user?.password}, ${user?.dateIn}
+					)`
+					: `SELECT user_id, user_role FROM Users WHERE user_name = '${user?.name}'`,
+			).catch((err) => {
+				hasErr = true
+				res.json({ success: false, msg: err })
+			})) as OracleDB.Result<unknown>
 
-		// VALIDAR USUARIO
-		const query = (await execute(
-			isNew
-				? `INSERT INTRO Users (user_id, user_role, user_name, department_fk, password, dateIn) VALUES (
-					0, ${user.role}, ${
-						user.name
-				  }, (SELECT department_id FROM Departments WHERE department_name = '${
-						user.department
-				  }'), ${user.password}, ${user.dateIn.toLocaleString('en-GB')}
-				)`
-				: `SELECT user_id FROM Users WHERE user_name = '${user.name}'`,
-		).catch((err) =>
-			res.json({ success: false, msg: err }),
-		)) as OracleDB.Result<unknown>
-
-		if ((query.rows && query.rows.length) || isNew) {
-			return res.json({
-				success: true,
-				token: jwt.sign(user, process.env.TOKEN_SECRET || '', {
-					expiresIn: `${3 * (isNew ? 1 : 5)}m`,
-				}),
-			})
+			if (((query.rows && query.rows.length) || isNew) && !hasErr && user) {
+				return res.json({
+					success: true,
+					// @ts-ignore
+					role: query.rows?.[0][1],
+					token: jwt.sign(
+						// @ts-ignore
+						{ ...user, role: query.rows?.[0][1] },
+						process.env.TOKEN_SECRET || '',
+						{
+							expiresIn: `${3 * (isNew ? 1 : 5)}m`,
+						},
+					),
+				})
+			} else
+				return res.status(403).json({ success: false, msg: 'No autorizado' })
 		}
 	}
 
