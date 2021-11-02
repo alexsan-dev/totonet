@@ -19,7 +19,7 @@ justify-content: center;
 .container{
   display: flex;
   background: #fff;
-  border-radius: 10px;
+  border-radius: var(--radius);
   overflow: hidden;
   box-shadow:  4px 4px 10px rgba(0,0,0,.05);
 

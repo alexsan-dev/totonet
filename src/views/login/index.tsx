@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react'
 
-import {useHistory} from 'react-router-dom'
+// ASSETS
+import Logo from 'assets/logo.png'
 
 // MATERIAL
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -16,25 +17,27 @@ import Button from '@mui/material/Button'
 // ICONS
 import VisibilityOffTwoTone from '@mui/icons-material/VisibilityOffTwoTone'
 import VisibilityTwoTone from '@mui/icons-material/VisibilityTwoTone'
-import EmailTwoTone from '@mui/icons-material/EmailTwoTone'
+import PersonTwoTone from '@mui/icons-material/PersonTwoTone'
 import LockTwoTone from '@mui/icons-material/LockTwoTone'
 import SendTwoTone from '@mui/icons-material/SendTwoTone'
 import InfoTwoTone from '@mui/icons-material/InfoTwoTone'
 
-// ESTILOS
-import Logo from 'assets/logo.png'
-import Styles from './style.module.scss'
+// HOOKS
+import { useHistory } from 'react-router-dom'
 
+// ESTILOS
+import Styles from './style.module.scss'
 
 // TOOLS
 import onSubmit, { LoginData } from './events'
 
 const Login: React.FC = () => {
+  
 	// MOSTRAR OCULTAR CONTRA
 	const [visiblePass, setVisiblePass] = useState(false)
 
   // ERRORES
-  const [errs, setErrs] = useState<LoginData>({email:false, password:false})
+  const [errs, setErrs] = useState<LoginData>({name:false, password:false})
 
   // ROUTER
   const history = useHistory()
@@ -61,22 +64,24 @@ const Login: React.FC = () => {
 						<div className={Styles.inputs}>
 							<TextField
               fullWidth
-								name="email"
+								name="name"
+                autoComplete='username'
 								defaultValue=""
-								label="Correo electrónico"
-								placeholder="example@domain.com"
-                error={(errs.email as boolean) ?? false}
-                helperText={errs.email ? 'Correo invalido' : '¿No recuerdas tu correo?'}
+								label="Nombre de usuario"
+								placeholder="admin"
+                error={(errs.name as boolean) ?? false}
+                helperText={errs.name ? 'Nombre invalido' : '¿No recuerdas tu nombre?'}
 								InputProps={{
 									startAdornment: (
 										<InputAdornment position="start">
-											<EmailTwoTone color={errs.email ? 'error' : 'primary'} />
+											<PersonTwoTone color={errs.name ? 'error' : 'primary'} />
 										</InputAdornment>
 									)
 								}}
 							/>
 							<TextField
-              fullWidth
+               fullWidth
+               autoComplete='current-password'
 								defaultValue=""
 								name="password"
 								label="Contraseña"
