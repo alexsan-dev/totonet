@@ -3,41 +3,41 @@ import { createTheme } from '@mui/material/styles'
 const theme = createTheme({
 	typography: {
 		button: {
-			textTransform: 'none'
+			textTransform: 'none',
 		},
-		fontFamily: 'Montserrat'
+		fontFamily: 'Montserrat',
 	},
 	components: {
 		MuiPaper: {
 			styleOverrides: {
 				rounded: {
 					borderRadius: '10px',
-					backgroundColor: 'rgb(246,246,246)'
-				}
-			}
+					backgroundColor: 'rgb(246,246,246)',
+				},
+			},
 		},
 		MuiSelect: {
 			styleOverrides: {
 				outlined: {
-					borderRadius: '10px'
-				}
-			}
+					borderRadius: '10px',
+				},
+			},
 		},
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: {
-					borderRadius: '10px'
-				}
-			}
+					borderRadius: '10px',
+				},
+			},
 		},
 		MuiButton: {
 			styleOverrides: {
 				root: {
 					borderRadius: '10px',
 					fontSize: '1rem',
-					padding: '10px 0'
-				}
-			}
+					padding: '10px 0',
+				},
+			},
 		},
 		MuiCheckbox: {
 			styleOverrides: {
@@ -47,10 +47,10 @@ const theme = createTheme({
 					borderRadius: '100%',
 
 					'& .MuiSvgIcon-root': {
-						opacity: 1
-					}
-				}
-			}
+						opacity: 1,
+					},
+				},
+			},
 		},
 		MuiSwitch: {
 			styleOverrides: {
@@ -58,10 +58,10 @@ const theme = createTheme({
 					'& .MuiIconButton-root': {
 						backgroundColor: 'transparent',
 						border: 'none',
-						opacity: 1
-					}
-				}
-			}
+						opacity: 1,
+					},
+				},
+			},
 		},
 		MuiIconButton: {
 			styleOverrides: {
@@ -73,56 +73,56 @@ const theme = createTheme({
 					width: 'auto',
 
 					'& .MuiSvgIcon-root': {
-						opacity: 1
-					}
+						opacity: 1,
+					},
 				},
 				root: {
-					borderRadius: 10
-				}
-			}
+					borderRadius: 10,
+				},
+			},
 		},
 		MuiTextField: {
 			styleOverrides: {
 				root: {
 					'& .MuiOutlinedInput-root': {
 						'& fieldset': {
-							borderRadius: 10
-						}
-					}
-				}
-			}
+							borderRadius: 10,
+						},
+					},
+				},
+			},
 		},
 		MuiAppBar: {
 			styleOverrides: {
 				root: {
 					boxShadow: 'none',
-					zIndex: 10
-				}
-			}
+					zIndex: 10,
+				},
+			},
 		},
 		MuiToolbar: {
 			styleOverrides: {
 				root: {
-					minHeight: 'unset'
+					minHeight: 'unset',
 				},
 				regular: {
-					minHeight: 'unset'
+					minHeight: 'unset',
 				},
 				gutters: {
 					paddingLeft: 0,
-					paddingRight: 0
-				}
-			}
-		}
+					paddingRight: 0,
+				},
+			},
+		},
 	},
 	palette: {
 		secondary: {
-			main: '#e81168'
+			main: '#e81168',
 		},
 		primary: {
-			main: '#1876d2'
-		}
-	}
+			main: '#1876d2',
+		},
+	},
 })
 
 export default theme

@@ -1,22 +1,21 @@
-.container{
-  background-color: #f5f5f5;
-  width: 500px;
-  border-radius:var(--radius);
-  overflow: hidden;
+.container {
+	background-color: #f5f5f5;
+	width: 500px;
+	border-radius: var(--radius);
+	overflow: hidden;
 
- & > p{
-    background-color: var(--primary);
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    padding: 3px 0;
-    opacity: 0.7;
-  }
+	& > p {
+		background-color: var(--primary);
+		color: #fff;
+		font-weight: bold;
+		text-align: center;
+		padding: 3px 0;
+		opacity: 0.7;
+	}
 
-  & > div{
-      overflow: auto;
-    padding: 20px;
-      height: 400px;
-
-  }
+	& > div {
+		overflow: auto;
+		padding: 20px;
+		height: 400px;
+	}
 }

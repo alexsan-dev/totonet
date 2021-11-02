@@ -20,7 +20,7 @@
 }
 
 * {
-  padding: 0;
+	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
 	outline: none;
@@ -30,10 +30,10 @@
 }
 
 body {
-  margin: 0;
-  --radius: 10px;
-  --secondary:#e81168;
-  --primary: #1876d2;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	--radius: 10px;
+	--secondary: #e81168;
+	--primary: #1876d2;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }

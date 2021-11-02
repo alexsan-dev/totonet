@@ -32,17 +32,16 @@ import Styles from './style.module.scss'
 import onSubmit, { LoginData } from './events'
 
 const Login: React.FC = () => {
-  
 	// MOSTRAR OCULTAR CONTRA
 	const [visiblePass, setVisiblePass] = useState(false)
 
-  // ERRORES
-  const [errs, setErrs] = useState<LoginData>({name:false, password:false})
+	// ERRORES
+	const [errs, setErrs] = useState<LoginData>({ name: false, password: false })
 
-  // ROUTER
-  const history = useHistory()
+	// ROUTER
+	const history = useHistory()
 
-  // CAMBIAR TIPO DE INPUT
+	// CAMBIAR TIPO DE INPUT
 	const changeVisible = () => setVisiblePass(!visiblePass)
 
 	// GUARDAR DATOS
@@ -52,70 +51,78 @@ const Login: React.FC = () => {
 		<main>
 			<section className={Styles.container}>
 				<div className={Styles.info}>
-          <img src={Logo} alt='Logo'/>
-					<Typography variant="body1">
+					<img src={Logo} alt='Logo' />
+					<Typography variant='body1'>
 						Gracias por visitarnos, bienvenido al dashboard oficial de Totonet. ✌️
 					</Typography>
-          <Button startIcon={<InfoTwoTone color='primary'/>} sx={{ fontWeight: 'bold', padding:'10px 20px', backgroundColor:'#fff !important', color: 'var(--primary)'}}>Ver mas</Button>
+					<Button
+						startIcon={<InfoTwoTone color='primary' />}
+						sx={{
+							fontWeight: 'bold',
+							padding: '10px 20px',
+							backgroundColor: '#fff !important',
+							color: 'var(--primary)',
+						}}>
+						Ver mas
+					</Button>
 				</div>
 				<div>
 					<form className={Styles.form} onSubmit={onSubmitHandler}>
-					<Typography className={Styles.title} variant="h5">Iniciar sesión 👋</Typography>
+						<Typography className={Styles.title} variant='h5'>
+							Iniciar sesión 👋
+						</Typography>
 						<div className={Styles.inputs}>
 							<TextField
-              fullWidth
-								name="name"
-                autoComplete='username'
-								defaultValue=""
-								label="Nombre de usuario"
-								placeholder="admin"
-                error={(errs.name as boolean) ?? false}
-                helperText={errs.name ? 'Nombre invalido' : '¿No recuerdas tu nombre?'}
+								fullWidth
+								name='name'
+								autoComplete='username'
+								defaultValue=''
+								label='Nombre de usuario'
+								placeholder='admin'
+								error={(errs.name as boolean) ?? false}
+								helperText={errs.name ? 'Nombre invalido' : '¿No recuerdas tu nombre?'}
 								InputProps={{
 									startAdornment: (
-										<InputAdornment position="start">
+										<InputAdornment position='start'>
 											<PersonTwoTone color={errs.name ? 'error' : 'primary'} />
 										</InputAdornment>
-									)
+									),
 								}}
 							/>
 							<TextField
-               fullWidth
-               autoComplete='current-password'
-								defaultValue=""
-								name="password"
-								label="Contraseña"
-								placeholder="SecurePASS"
+								fullWidth
+								autoComplete='current-password'
+								defaultValue=''
+								name='password'
+								label='Contraseña'
+								placeholder='SecurePASS'
 								type={visiblePass ? 'text' : 'password'}
-                error={(errs.password as boolean) ?? false}
-                helperText={errs.password ? 'Contraseña invalida' : '¿No recuerdas tu contraseña?'}
+								error={(errs.password as boolean) ?? false}
+								helperText={errs.password ? 'Contraseña invalida' : '¿No recuerdas tu contraseña?'}
 								InputProps={{
 									startAdornment: (
-										<InputAdornment position="start">
+										<InputAdornment position='start'>
 											<LockTwoTone color={errs.password ? 'error' : 'primary'} />
 										</InputAdornment>
 									),
 									endAdornment: (
-										<InputAdornment position="end">
+										<InputAdornment position='end'>
 											<IconButton onClick={changeVisible}>
-												{!visiblePass ? (
-													<VisibilityTwoTone />
-												) : (
-													<VisibilityOffTwoTone />
-												)}
+												{!visiblePass ? <VisibilityTwoTone /> : <VisibilityOffTwoTone />}
 											</IconButton>
 										</InputAdornment>
-									)
+									),
 								}}
 							/>
 						</div>
 						<FormGroup className={Styles.remember}>
-							<FormControlLabel
-								control={<Checkbox defaultChecked />}
-								label="Recordarme"
-							/>
+							<FormControlLabel control={<Checkbox defaultChecked />} label='Recordarme' />
 						</FormGroup>
-						<Button variant='contained' className={Styles.button} type="submit" startIcon={<SendTwoTone />}>
+						<Button
+							variant='contained'
+							className={Styles.button}
+							type='submit'
+							startIcon={<SendTwoTone />}>
 							Iniciar sesión
 						</Button>
 					</form>

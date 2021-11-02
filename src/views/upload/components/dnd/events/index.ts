@@ -11,14 +11,14 @@ const onSubmit = (xml: string) => {
 	authFetch('http://localhost:5000/upload', {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ xml })
+		body: JSON.stringify({ xml }),
 	})
 		.then(() => {
 			window.Snack('Archivo xml subido correctamente')
 		})
-		.catch(err => {
+		.catch((err) => {
 			window.Snack(err)
 		})
 }

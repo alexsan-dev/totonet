@@ -16,5 +16,5 @@ export default withAlerts({
 	confirmText: 'Aceptar',
 	cancelText: 'Aceptar',
 	zIndex: 1000,
-	blurred: true
+	blurred: true,
 })(App)

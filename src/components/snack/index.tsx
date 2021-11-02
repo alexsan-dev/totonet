@@ -1,4 +1,3 @@
-
 // eslint-disable react-hooks/exhaustive-deps
 // REACT
 import React, { useState, useEffect } from 'react'
@@ -6,7 +5,6 @@ import React, { useState, useEffect } from 'react'
 // MATERIAL
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
-
 
 // PROPS
 interface SnackProps {

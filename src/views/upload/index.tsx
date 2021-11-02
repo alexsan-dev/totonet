@@ -17,11 +17,11 @@ const UploadView: React.FC = () => {
 	const [xml, setXml] = useState({ xml: '', name: 'file.xml' })
 
 	// ON DROP
-	const onDropHandler: DropzoneProps['onDrop'] = files => onDrop(setXml, files)
+	const onDropHandler: DropzoneProps['onDrop'] = (files) => onDrop(setXml, files)
 
 	return (
 		<div className={Styles.container}>
-			<UploadInput xml={xml.xml} onDrop={onDropHandler} accept=".xml" />
+			<UploadInput xml={xml.xml} onDrop={onDropHandler} accept='.xml' />
 			<XmlViewer {...xml} />
 		</div>
 	)
