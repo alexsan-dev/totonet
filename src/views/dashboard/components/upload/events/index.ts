@@ -10,13 +10,13 @@ import React from 'react'
 const onDrop = (
 	setXml: React.Dispatch<React.SetStateAction<{ xml: string; name: string }>>,
 	filesChanged: File[]
-) => {
+): void => {
 	const file = filesChanged[0]
 	const reader = new FileReader()
 
 	// EVENTOS
-	reader.onabort = () => console.log('file reading was aborted')
-	reader.onerror = () => console.log('file reading has failed')
+	reader.onabort = () => window.Snack('Carga cancelada')
+	reader.onerror = () => window.Snack('Error al cargar archivo')
 	reader.onload = () => setXml({ xml: reader.result as string, name: file?.name || '' })
 
 	// CARGAR

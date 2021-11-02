@@ -1,0 +1,18 @@
+.content {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	justify-content: center;
+	column-gap: var(--margin);
+	width: 100%;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+	padding-bottom: var(--margin);
+}

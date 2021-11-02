@@ -6,7 +6,7 @@ import authFetch from 'utils/tools'
  * @description Cargar xml a base de datos
  * @param xml
  */
-const onSubmit = (xml: string) => {
+const onSubmit = (xml: string): void => {
 	// PETICION
 	authFetch('http://localhost:5000/upload', {
 		method: 'POST',

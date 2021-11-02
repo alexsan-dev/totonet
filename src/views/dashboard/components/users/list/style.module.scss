@@ -1,0 +1,10 @@
+.tHead {
+	& > tr {
+		& > th {
+			& > svg {
+				margin-bottom: -7px;
+				margin-right: 5px;
+			}
+		}
+	}
+}

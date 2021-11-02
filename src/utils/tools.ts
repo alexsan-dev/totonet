@@ -31,13 +31,17 @@ const authFetch = async (
 		return fetch(input, {
 			...init,
 			headers: { ...init?.headers, authorization: cookie.token },
-			body: JSON.stringify({
-				...JSON.parse(init?.body as string),
-				user: {
-					...JSON.parse(init?.body as string).user,
-					role: cookie.role,
-				},
-			}),
+			body: init?.body
+				? JSON.stringify({
+						...JSON.parse(init?.body as string),
+						user: JSON.parse(init?.body as string).user
+							? {
+									...JSON.parse(init?.body as string).user,
+									role: cookie.role,
+							  }
+							: undefined,
+				  })
+				: undefined,
 		})
 	}
 

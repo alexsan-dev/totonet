@@ -34,6 +34,7 @@ body {
 	--radius: 10px;
 	--secondary: #e81168;
 	--primary: #1876d2;
+	--margin: 30px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }

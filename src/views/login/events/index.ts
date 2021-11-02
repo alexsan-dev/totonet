@@ -12,9 +12,13 @@ export interface LoginData {
 const onSubmit = (
 	ev: React.FormEvent<HTMLFormElement>,
 	setErrs: React.Dispatch<React.SetStateAction<LoginData>>,
+	setLoader: React.Dispatch<React.SetStateAction<boolean>>,
 	history: RouteComponentProps['history']
-) => {
+): void => {
 	ev.preventDefault()
+
+	// CARGA
+	setLoader(true)
 
 	// DATOS
 	const formData = (ev.target as HTMLFormElement).elements as unknown as LoginData
@@ -40,11 +44,18 @@ const onSubmit = (
 				if (credential.success) {
 					document.cookie = `role=${credential.role}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
 					document.cookie = `token=${credential.token}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
+
 					window.Snack(`Bienvenido ${data.name}`)
 					history.push('/dashboard')
 				} else window.Snack('Error al iniciar')
+				setLoader(false)
 			})
-			.catch((err) => console.log(err))
+			.catch(() => {
+				window.Snack('Error al iniciar')
+				setLoader(false)
+			})
+	} else {
+		setLoader(false)
 	}
 }
 

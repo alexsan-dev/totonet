@@ -1,0 +1,9 @@
+.info {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 400px 200px;
+	grid-template-rows: 1fr;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--margin);
+}

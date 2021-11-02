@@ -1,6 +1,6 @@
 import React from 'react'
 import DashboardView from 'views/dashboard'
 
-const Dashboard = () => <DashboardView />
+const Dashboard: React.FC = () => <DashboardView />
 
 export default Dashboard

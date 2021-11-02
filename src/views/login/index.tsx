@@ -7,6 +7,7 @@ import Logo from 'assets/logo.png'
 // MATERIAL
 import FormControlLabel from '@mui/material/FormControlLabel'
 import InputAdornment from '@mui/material/InputAdornment'
+import LinearProgress from '@mui/material/LinearProgress'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -35,6 +36,9 @@ const Login: React.FC = () => {
 	// MOSTRAR OCULTAR CONTRA
 	const [visiblePass, setVisiblePass] = useState(false)
 
+	// QUITAR BARRA DE CARGA
+	const [loader, setLoader] = useState(false)
+
 	// ERRORES
 	const [errs, setErrs] = useState<LoginData>({ name: false, password: false })
 
@@ -45,7 +49,8 @@ const Login: React.FC = () => {
 	const changeVisible = () => setVisiblePass(!visiblePass)
 
 	// GUARDAR DATOS
-	const onSubmitHandler = (ev: React.FormEvent<HTMLFormElement>) => onSubmit(ev, setErrs, history)
+	const onSubmitHandler = (ev: React.FormEvent<HTMLFormElement>) =>
+		onSubmit(ev, setErrs, setLoader, history)
 
 	return (
 		<main>
@@ -67,7 +72,14 @@ const Login: React.FC = () => {
 					</Button>
 				</div>
 				<div>
-					<form className={Styles.form} onSubmit={onSubmitHandler}>
+					<LinearProgress style={{ opacity: loader ? 1 : 0 }} />
+					<form
+						className={Styles.form}
+						onSubmit={onSubmitHandler}
+						style={{
+							filter: loader ? 'grayscale(1)' : 'none',
+							pointerEvents: loader ? 'none' : 'all',
+						}}>
 						<Typography className={Styles.title} variant='h5'>
 							Iniciar sesión 👋
 						</Typography>

@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 
 // COMPONENTES
 import { DropzoneProps } from 'react-dropzone'
+import Info from 'components/info'
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import UploadInput from './components/dnd'
 import XmlViewer from './components/xml'
 
@@ -19,11 +21,23 @@ const UploadView: React.FC = () => {
 	// ON DROP
 	const onDropHandler: DropzoneProps['onDrop'] = (files) => onDrop(setXml, files)
 
+	// REINICIAR
+	const reset = () => setXml({ xml: '', name: 'file.xml' })
+
 	return (
-		<div className={Styles.container}>
-			<UploadInput xml={xml.xml} onDrop={onDropHandler} accept='.xml' />
-			<XmlViewer {...xml} />
-		</div>
+		<section className={Styles.container}>
+			<Info
+				title='Carga masiva'
+				body='Carga datos masivos desde un archivo xml.'
+				button='Limpiar datos'
+				buttonProps={{ onClick: reset }}
+				icon={<HighlightOffTwoToneIcon />}
+			/>
+			<div className={Styles.content}>
+				<UploadInput xml={xml.xml} onDrop={onDropHandler} accept='.xml' />
+				<XmlViewer {...xml} />
+			</div>
+		</section>
 	)
 }
 
