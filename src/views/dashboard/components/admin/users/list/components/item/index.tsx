@@ -9,6 +9,14 @@ interface ItemProps {
 	user: User
 	openMenu: (ev: React.MouseEvent) => void
 }
+
+const userRoleName = {
+	admin: 'Administrador',
+	coord: 'Coordinador',
+	recruiter: 'Reclutador',
+	guest: 'Invitado',
+}
+
 const Item: React.FC<ItemProps> = ({ user, openMenu }) => {
 	return (
 		<TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -16,11 +24,12 @@ const Item: React.FC<ItemProps> = ({ user, openMenu }) => {
 				{user.id}
 			</TableCell>
 			<TableCell align='left'>{user.name}</TableCell>
-			<TableCell align='left'>{user.role}</TableCell>
+			<TableCell align='left'>{user.password}</TableCell>
+			<TableCell align='left'>{userRoleName[user.role]}</TableCell>
 			<TableCell align='left'>{user.departmentName ?? 'Sin departamento'}</TableCell>
 			<TableCell align='left'>{user.active ? 'Activo' : 'Inactivo'}</TableCell>
-			<TableCell align='left'>{user.dateIn ?? '--'}</TableCell>
-			<TableCell align='left'>{user.dateOut ?? '--'}</TableCell>
+			<TableCell align='left'>{user.dateIn ?? 'Inicio del sistema'}</TableCell>
+			<TableCell align='left'>{user.dateOut ?? 'Sin fecha de baja'}</TableCell>
 			<TableCell align='center'>
 				<IconButton onClick={openMenu}>
 					<MoreVertTwoToneIcon />

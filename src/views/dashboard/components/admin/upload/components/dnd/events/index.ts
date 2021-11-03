@@ -28,7 +28,7 @@ const onSubmit = (xml: string, history: RouteComponentProps['history']): void =>
 			} else window.Snack('Error al intentar subir')
 		})
 		.catch((err) => {
-			window.Snack(err)
+			window.Snack(err.toString())
 		})
 }
 

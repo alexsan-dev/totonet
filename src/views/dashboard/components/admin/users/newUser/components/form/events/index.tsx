@@ -1,4 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
+import Typography from '@mui/material/Typography'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import authFetch from 'utils/tools'
@@ -21,7 +22,7 @@ const onSubmit = (
 		department: +(formData.department as unknown as HTMLInputElement)?.value,
 		active: user?.active ?? true,
 		id: user?.id ?? 0,
-		dateIn: user?.dateIn ?? new Date().toLocaleDateString('en-GB'),
+		dateIn: user?.dateIn ?? new Date().toLocaleString('en-GB'),
 		dateOut: user?.dateOut ?? null,
 	}
 
@@ -34,7 +35,9 @@ const onSubmit = (
 		customElements: (
 			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 				<CircularProgress />
-				<p style={{ marginLeft: 'var(--margin)' }}>Actualizando, espera un momento...</p>
+				<Typography variant='body1' style={{ marginLeft: 'var(--margin)' }}>
+					Actualizando, espera un momento...
+				</Typography>
 			</div>
 		),
 	})

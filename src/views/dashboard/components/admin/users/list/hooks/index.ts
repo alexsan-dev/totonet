@@ -17,7 +17,7 @@ const useUsers = (
 		authFetch(history, 'http://localhost:5000/users', { method: 'GET' })
 			.then((res) => res?.json())
 			.then((users) => {
-				const list = (users.data as (string | null | number)[][])?.map((user) => ({
+				const list = (users?.data as (string | null | number)[][])?.map((user) => ({
 					role: user[0] as UserRole,
 					name: user[1] as string,
 					password: user[2] as string,

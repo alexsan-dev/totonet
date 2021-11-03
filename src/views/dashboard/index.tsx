@@ -4,6 +4,7 @@ import React from 'react'
 import useUserToken from 'hooks/auth'
 
 // SECCIONES DE ADMIN
+import Topbar from 'components/topbar'
 import UploadView from './components/admin/upload'
 import UsersView from './components/admin/users'
 
@@ -18,6 +19,7 @@ const DashboardView: React.FC = () => {
 
 	return (
 		<div className={Styles.container}>
+			<Topbar />
 			<div className={Styles.content}>
 				{(token?.role === 'admin' && (
 					<>

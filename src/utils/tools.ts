@@ -58,7 +58,7 @@ const authFetch = async (
 	}
 
 	// REGRESAR AL LOGIN
-	history.replace('/login')
+	history?.replace('/login')
 	return null
 }
 

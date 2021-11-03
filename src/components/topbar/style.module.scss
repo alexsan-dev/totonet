@@ -1,0 +1,16 @@
+.content {
+	width: 100%;
+	display: grid !important;
+	grid-template-columns: auto auto 1fr auto;
+	column-gap: 10px;
+	padding: 0 var(--margin);
+
+	& > img {
+		height: 35px;
+	}
+
+	& > button {
+		width: 170px;
+		height: 40px;
+	}
+}

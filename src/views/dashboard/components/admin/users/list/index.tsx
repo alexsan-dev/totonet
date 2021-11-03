@@ -18,6 +18,7 @@ import PanToolTwoToneIcon from '@mui/icons-material/PanToolTwoTone'
 import Grid3x3TwoToneIcon from '@mui/icons-material/Grid3x3TwoTone'
 import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone'
 import DomainTwoToneIcon from '@mui/icons-material/DomainTwoTone'
+import LockTwoTone from '@mui/icons-material/LockTwoTone'
 
 import { useHistory } from 'react-router-dom'
 import Item from './components/item'
@@ -91,6 +92,10 @@ const UsersList: React.FC<UsersListProps> = ({ extUpdateCounter }) => {
 								Nombre
 							</TableCell>
 							<TableCell align='left'>
+								<LockTwoTone color='primary' />
+								Contraseña
+							</TableCell>
+							<TableCell align='left'>
 								<PanToolTwoToneIcon color='primary' />
 								Rol
 							</TableCell>
@@ -104,11 +109,11 @@ const UsersList: React.FC<UsersListProps> = ({ extUpdateCounter }) => {
 							</TableCell>
 							<TableCell align='left'>
 								<EventAvailableTwoToneIcon color='primary' />
-								Inicio
+								Fecha de Inicio
 							</TableCell>
 							<TableCell align='left'>
 								<EventBusyTwoToneIcon color='primary' />
-								Baja
+								Fecha de Baja
 							</TableCell>
 							<TableCell align='center'>
 								<SettingsApplicationsTwoToneIcon color='primary' />
