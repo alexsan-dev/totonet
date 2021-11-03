@@ -1,20 +1,15 @@
-import MuiThemeProvider from 'providers/theme'
 import React from 'react'
 import Router from 'router'
-import withAlerts from '@weareluastudio/lualert'
 import GlobalSnack from 'components/snack'
+import MuiThemeProvider from 'providers/theme'
+import AlertProvider from 'providers/alerts'
 
 const App: React.FC = () => (
 	<MuiThemeProvider>
+		<AlertProvider />
 		<GlobalSnack />
 		<Router />
 	</MuiThemeProvider>
 )
 
-export default withAlerts({
-	confirmColor: 'var(--primary)',
-	confirmText: 'Aceptar',
-	cancelText: 'Aceptar',
-	zIndex: 1000,
-	blurred: true,
-})(App)
+export default App

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 
@@ -11,7 +12,8 @@
 const authFetch = async (
 	input: Request | string,
 	// eslint-disable-next-line no-undef
-	init?: RequestInit
+	init?: RequestInit,
+	includeRole?: boolean
 ): Promise<Response | null> => {
 	// OBTENER COOKIE
 	const parseCookie = (str: string) =>
@@ -31,17 +33,19 @@ const authFetch = async (
 		return fetch(input, {
 			...init,
 			headers: { ...init?.headers, authorization: cookie.token },
-			body: init?.body
-				? JSON.stringify({
-						...JSON.parse(init?.body as string),
-						user: JSON.parse(init?.body as string).user
-							? {
-									...JSON.parse(init?.body as string).user,
-									role: cookie.role,
-							  }
-							: undefined,
-				  })
-				: undefined,
+			body: includeRole
+				? init?.body
+					? JSON.stringify({
+							...JSON.parse(init?.body as string),
+							user: JSON.parse(init?.body as string).user
+								? {
+										...JSON.parse(init?.body as string).user,
+										role: cookie.role,
+								  }
+								: undefined,
+					  })
+					: undefined
+				: init?.body,
 		})
 	}
 

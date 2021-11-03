@@ -7,8 +7,9 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 
 interface ItemProps {
 	user: User
+	openMenu: (ev: React.MouseEvent) => void
 }
-const Item: React.FC<ItemProps> = ({ user }) => {
+const Item: React.FC<ItemProps> = ({ user, openMenu }) => {
 	return (
 		<TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 			<TableCell component='th' scope='row'>
@@ -16,12 +17,12 @@ const Item: React.FC<ItemProps> = ({ user }) => {
 			</TableCell>
 			<TableCell align='left'>{user.name}</TableCell>
 			<TableCell align='left'>{user.role}</TableCell>
-			<TableCell align='left'>{user.department ?? 'Sin departamento'}</TableCell>
+			<TableCell align='left'>{user.departmentName ?? 'Sin departamento'}</TableCell>
 			<TableCell align='left'>{user.active ? 'Activo' : 'Inactivo'}</TableCell>
 			<TableCell align='left'>{user.dateIn ?? '--'}</TableCell>
-			<TableCell align='left'>{user.dateIn ?? '--'}</TableCell>
+			<TableCell align='left'>{user.dateOut ?? '--'}</TableCell>
 			<TableCell align='center'>
-				<IconButton>
+				<IconButton onClick={openMenu}>
 					<MoreVertTwoToneIcon />
 				</IconButton>
 			</TableCell>

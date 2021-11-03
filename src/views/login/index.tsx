@@ -86,6 +86,7 @@ const Login: React.FC = () => {
 						<div className={Styles.inputs}>
 							<TextField
 								fullWidth
+								required
 								name='name'
 								autoComplete='username'
 								defaultValue=''
@@ -102,6 +103,7 @@ const Login: React.FC = () => {
 								}}
 							/>
 							<TextField
+								required
 								fullWidth
 								autoComplete='current-password'
 								defaultValue=''

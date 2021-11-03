@@ -7,6 +7,7 @@ interface User {
 	dateOut: string | null
 	dateIn: string | null
 	department: number
+	departmentName?: string
 }
 
-type UserRole = 'admin' | 'guest'
+type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter'

@@ -1,0 +1,21 @@
+.form {
+	padding: 20px 0;
+	display: grid;
+	grid-template-rows: repeat(4, auto);
+	row-gap: 20px;
+
+	.actions {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		margin-bottom: -20px;
+
+		button:last-of-type {
+			width: 130px;
+		}
+
+		button:first-of-type {
+			width: 100px;
+		}
+	}
+}

@@ -47,8 +47,10 @@ const onSubmit = (
 
 					window.Snack(`Bienvenido ${data.name}`)
 					history.push('/dashboard')
-				} else window.Snack('Error al iniciar')
-				setLoader(false)
+				} else {
+					setLoader(false)
+					window.Snack('Error al iniciar')
+				}
 			})
 			.catch(() => {
 				window.Snack('Error al iniciar')
