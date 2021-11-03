@@ -1,13 +1,16 @@
 CREATE TABLE Departments (
-  department_id NUMBER,
+  department_id NUMBER NOT NULL,
   dep_name VARCHAR2(250) NOT NULL,
   total NUMBER NOT NULL,
-  PRIMARY KEY(department_id)
+  dep_fk NUMBER,
+  PRIMARY KEY(department_id),
+  CONSTRAINT sub_department_fk FOREIGN KEY (dep_fk) REFERENCES Departments (department_id)
 );
 
 CREATE TABLE Jobs (
-  job_id NUMBER,
+  job_id NUMBER NOT NULL,
   job_name VARCHAR2(250) NOT NULL,
+  image VARCHAR(500),
   salary NUMBER NOT NULL,
   PRIMARY KEY(job_id)
 );
@@ -85,3 +88,4 @@ CREATE SEQUENCE users_seq START WITH 2 INCREMENT BY 1 CACHE 100;
 
 INSERT INTO Users VALUES ('admin', 'admin', 'admin', 1, 1, NULL, NULL, NULL);
 COMMIT;
+

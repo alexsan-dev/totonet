@@ -4,68 +4,69 @@ export interface PrimaryData {
 }
 
 export interface Data {
-	elements: [
-		{
-			name: 'departamentos'
-			elements: {
-				name: 'departamento'
-				elements: (
-					| {
-							name: 'nombre' | 'capital_total'
-							elements: [PrimaryData]
-					  }
-					| {
-							name: 'puestos'
-							elements: {
-								name: 'puesto'
-								elements: (
-									| {
-											name: 'nombre' | 'salario'
-											elements: [PrimaryData]
-									  }
-									| {
-											name: 'categorias'
-											elements: {
-												name: 'categoria'
-												elements: [
-													{
-														name: 'nombre'
-														elements: [PrimaryData]
-													},
-												]
-											}[]
-									  }
-									| {
-											name: 'requisitos'
-											elements: {
-												name: 'requisito'
-												elements: (
-													| {
-															name: 'nombre' | 'tamaño' | 'obligatorio'
-															elements: [PrimaryData]
-													  }
-													| {
-															name: 'formatos'
-															elements: {
-																name: 'formato'
-																elements: [
-																	{
-																		name: 'nombre'
-																		elements: [PrimaryData]
-																	},
-																]
-															}[]
-													  }
-												)[]
-											}[]
-									  }
-								)[]
-							}[]
-					  }
-				)[]
-			}[]
-		},
-	]
+	elements: [DepartmentsData]
+}
+
+export interface DepartmentsData {
+	name: 'departamentos'
+	elements: {
+		name: 'departamento'
+		elements: (
+			| {
+					name: 'nombre' | 'capital_total'
+					elements: [PrimaryData]
+			  }
+			| {
+					name: 'puestos'
+					elements: {
+						name: 'puesto'
+						elements: (
+							| {
+									name: 'nombre' | 'salario' | 'imagen'
+									elements: [PrimaryData]
+							  }
+							| {
+									name: 'categorias'
+									elements: {
+										name: 'categoria'
+										elements: [
+											{
+												name: 'nombre'
+												elements: [PrimaryData]
+											},
+										]
+									}[]
+							  }
+							| {
+									name: 'requisitos'
+									elements: {
+										name: 'requisito'
+										elements: (
+											| {
+													name: 'nombre' | 'tamaño' | 'obligatorio'
+													elements: [PrimaryData]
+											  }
+											| {
+													name: 'formatos'
+													elements: {
+														name: 'formato'
+														elements: [
+															{
+																name: 'nombre'
+																elements: [PrimaryData]
+															},
+														]
+													}[]
+											  }
+										)[]
+									}[]
+							  }
+						)[]
+					}[]
+			  }
+			| DepartmentsData
+		)[]
+	}[]
 }
 
 export interface TemporalData {
@@ -73,12 +74,14 @@ export interface TemporalData {
 		[id: string]: {
 			dep_name: string
 			total: number
+			dep_fk?: string
 		}
 	}
 	Jobs: {
 		[id: string]: {
 			job_name: string
 			salary: number
+			image: string
 		}
 	}
 	Categories: {
