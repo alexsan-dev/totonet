@@ -1,10 +1,12 @@
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
 import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import authFetch from 'utils/tools'
 
 const onSubmit = (
 	ev: React.FormEvent<HTMLFormElement>,
 	isNew: boolean,
+	history: RouteComponentProps['history'],
 	user?: User,
 	onSuccess?: () => void
 ): void => {
@@ -38,7 +40,7 @@ const onSubmit = (
 	})
 
 	// GUARDAR O CREAR USUARIO
-	authFetch(`http://localhost:5000/user${isNew ? '' : `/${user?.id}`}`, {
+	authFetch(history, `http://localhost:5000/user${isNew ? '' : `/${user?.id}`}`, {
 		method: isNew ? 'POST' : 'PUT',
 		headers: {
 			'Content-Type': 'application/json',

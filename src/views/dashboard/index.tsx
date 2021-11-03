@@ -1,17 +1,34 @@
 import React from 'react'
 
-import UploadView from './components/upload'
-import UsersView from './components/users'
+// HOOKS
+import useUserToken from 'hooks/auth'
 
+// SECCIONES DE ADMIN
+import UploadView from './components/admin/upload'
+import UsersView from './components/admin/users'
+
+// SECCIONES DE COORDINADOR
+
+// ESTILOS
 import Styles from './style.module.scss'
 
-const DashboardView: React.FC = () => (
-	<div className={Styles.container}>
-		<div className={Styles.content}>
-			<UploadView />
-			<UsersView />
+const DashboardView: React.FC = () => {
+	// LEER TOKEN
+	const token = useUserToken()
+
+	return (
+		<div className={Styles.container}>
+			<div className={Styles.content}>
+				{(token?.role === 'admin' && (
+					<>
+						<UploadView />
+						<UsersView />
+					</>
+				)) ||
+					(token?.role === 'coord' && <></>)}
+			</div>
 		</div>
-	</div>
-)
+	)
+}
 
 export default DashboardView

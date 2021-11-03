@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
 import authFetch from 'utils/tools'
 
 /**
@@ -7,12 +8,13 @@ import authFetch from 'utils/tools'
  * @param setUsers
  */
 const useUsers = (
+	history: RouteComponentProps['history'],
 	setUsers: React.Dispatch<React.SetStateAction<User[]>>,
 	updateCounter: number
 ): void => {
 	useEffect(() => {
 		// PETICION
-		authFetch('http://localhost:5000/users', { method: 'GET' })
+		authFetch(history, 'http://localhost:5000/users', { method: 'GET' })
 			.then((res) => res?.json())
 			.then((users) => {
 				const list = (users.data as (string | null | number)[][])?.map((user) => ({

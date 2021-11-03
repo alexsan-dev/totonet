@@ -14,6 +14,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 
+import { useHistory } from 'react-router-dom'
 import useDepartments from './hooks'
 
 import Styles from './style.module.scss'
@@ -28,12 +29,15 @@ const NewUserForm: React.FC<NewUserFormProps> = ({ user, onSuccess, preview }) =
 	// DEPARTAMENTOS
 	const [departments, setDepartments] = useState<Department[]>([])
 
+	// HISTORY
+	const history = useHistory()
+
 	// HOOKS
-	useDepartments(setDepartments)
+	useDepartments(history, setDepartments)
 
 	// ENVIAR DATOS
 	const submitHandler = (ev: React.FormEvent<HTMLFormElement>) =>
-		onSubmit(ev, user === undefined || user === null, user, onSuccess)
+		onSubmit(ev, user === undefined || user === null, history, user, onSuccess)
 
 	return (
 		<>

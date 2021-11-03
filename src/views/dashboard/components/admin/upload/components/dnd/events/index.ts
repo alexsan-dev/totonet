@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { RouteComponentProps } from 'react-router'
 import authFetch from 'utils/tools'
 
 /**
@@ -6,9 +7,10 @@ import authFetch from 'utils/tools'
  * @description Cargar xml a base de datos
  * @param xml
  */
-const onSubmit = (xml: string): void => {
+const onSubmit = (xml: string, history: RouteComponentProps['history']): void => {
 	// PETICION
 	authFetch(
+		history,
 		'http://localhost:5000/upload',
 		{
 			method: 'POST',

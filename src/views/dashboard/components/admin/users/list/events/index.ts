@@ -1,3 +1,4 @@
+import { RouteComponentProps } from 'react-router'
 import authFetch from 'utils/tools'
 
 /**
@@ -5,9 +6,13 @@ import authFetch from 'utils/tools'
  * @description Borrar usuario en la db
  * @param user
  */
-const deleteUser = (user?: User, onSuccess?: () => void): void => {
+const deleteUser = (
+	history: RouteComponentProps['history'],
+	user?: User,
+	onSuccess?: () => void
+): void => {
 	// PETICION
-	authFetch(`http://localhost:5000/user/${user?.id}`, { method: 'DELETE' })
+	authFetch(history, `http://localhost:5000/user/${user?.id}`, { method: 'DELETE' })
 		.then((res) => res?.json())
 		.then((data) => {
 			if (data.success) {

@@ -2,6 +2,24 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 
+import { RouteComponentProps } from 'react-router'
+
+/**
+ * Parser cookie
+ * @description Convierte document.cookie en un objeto
+ * @param str
+ * @returns
+ */
+export const parseCookie = (str: string): UserToken =>
+	str
+		.split(';')
+		.map((v) => v.split('='))
+		.reduce((acc, v) => {
+			// @ts-ignore
+			acc[decodeURIComponent(v[0]?.trim())] = decodeURIComponent(v[1]?.trim())
+			return acc
+		}, {})
+
 /**
  * Peticion OAuth
  * @description Crear peticion fetch con cookie
@@ -10,23 +28,13 @@
  * @returns
  */
 const authFetch = async (
+	history: RouteComponentProps['history'],
 	input: Request | string,
 	// eslint-disable-next-line no-undef
 	init?: RequestInit,
 	includeRole?: boolean
 ): Promise<Response | null> => {
-	// OBTENER COOKIE
-	const parseCookie = (str: string) =>
-		str
-			.split(';')
-			.map((v) => v.split('='))
-			.reduce((acc, v) => {
-				// @ts-ignore
-				acc[decodeURIComponent(v[0]?.trim())] = decodeURIComponent(v[1]?.trim())
-				return acc
-			}, {})
-
-	const cookie = parseCookie(document.cookie) as { token?: string; role?: string }
+	const cookie = parseCookie(document.cookie) as UserToken
 
 	// COOKIE
 	if (cookie.token?.length && cookie.role?.length) {
@@ -50,7 +58,7 @@ const authFetch = async (
 	}
 
 	// REGRESAR AL LOGIN
-	window.location.replace('/')
+	history.replace('/login')
 	return null
 }
 

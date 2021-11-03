@@ -13,6 +13,7 @@ import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
 import UploadFileTwoToneIcon from '@mui/icons-material/UploadFileTwoTone'
 import SendTwoTone from '@mui/icons-material/SendTwoTone'
 
+import { useHistory } from 'react-router-dom'
 import onSubmit from './events'
 
 // ESTILOS
@@ -24,8 +25,11 @@ interface UploadInputProps extends DropzoneProps {
 }
 
 const UploadInput: React.FC<UploadInputProps> = (props) => {
+	// HISTORY
+	const history = useHistory()
+
 	// ENVIAR DATOS
-	const onSubmitHandler = () => onSubmit(props.xml)
+	const onSubmitHandler = () => onSubmit(props.xml, history)
 
 	return (
 		<section className={Styles.content}>

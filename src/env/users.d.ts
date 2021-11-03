@@ -10,4 +10,9 @@ interface User {
 	departmentName?: string
 }
 
+interface UserToken {
+	token?: string
+	role?: UserRole
+}
+
 type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter'

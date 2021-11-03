@@ -7,7 +7,7 @@ import Index from 'pages'
 
 const Router: React.FC = () => (
 	<BrowserRouter>
-		<Route exact path='/' component={Index} />
+		<Route exact path='/login' component={Index} />
 		<Route exact path='/dashboard' component={Dashboard} />
 	</BrowserRouter>
 )

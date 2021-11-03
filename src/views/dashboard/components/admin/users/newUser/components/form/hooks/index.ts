@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
 import authFetch from 'utils/tools'
 
 /**
@@ -7,11 +8,12 @@ import authFetch from 'utils/tools'
  * @param setDepartments
  */
 const useDepartments = (
+	history: RouteComponentProps['history'],
 	setDepartments: React.Dispatch<React.SetStateAction<Department[]>>
 ): void => {
 	useEffect(() => {
 		// PETICION
-		authFetch('http://localhost:5000/departments', { method: 'GET' })
+		authFetch(history, 'http://localhost:5000/departments', { method: 'GET' })
 			.then((res) => res?.json())
 			.then((deps) => {
 				const list = (deps.data as (string | null | number)[][])?.map((dep) => ({

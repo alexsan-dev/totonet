@@ -19,6 +19,7 @@ import Grid3x3TwoToneIcon from '@mui/icons-material/Grid3x3TwoTone'
 import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone'
 import DomainTwoToneIcon from '@mui/icons-material/DomainTwoTone'
 
+import { useHistory } from 'react-router-dom'
 import Item from './components/item'
 import useUsers from './hooks'
 
@@ -32,6 +33,9 @@ interface UsersListProps {
 }
 
 const UsersList: React.FC<UsersListProps> = ({ extUpdateCounter }) => {
+	// HISTORY
+	const history = useHistory()
+
 	// LISTA
 	const [users, setUsers] = useState<User[]>([])
 
@@ -59,7 +63,7 @@ const UsersList: React.FC<UsersListProps> = ({ extUpdateCounter }) => {
 
 	// BORRAR USUARIO
 	const deleteUserHandler = () => {
-		deleteUser(currentUser, () => setUpdateCounter(updateCounter + 1))
+		deleteUser(history, currentUser, () => setUpdateCounter(updateCounter + 1))
 		handleClose()
 	}
 
@@ -70,7 +74,7 @@ const UsersList: React.FC<UsersListProps> = ({ extUpdateCounter }) => {
 	}
 
 	// HOOKS
-	useUsers(setUsers, updateCounter + extUpdateCounter)
+	useUsers(history, setUsers, updateCounter + extUpdateCounter)
 
 	return (
 		<>
