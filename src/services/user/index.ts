@@ -1,12 +1,8 @@
-import { execute } from 'utils/db'
-import OracleDB from 'oracledb'
+import { User } from 'models/user'
+import runSQL from 'utils/sql'
 import express from 'express'
 
 class UserService {
-	constructor() {
-		this.getUser = this.getUser.bind(this)
-	}
-
 	/**
 	 * Obtener usuario
 	 * @description Obtener un usuario por nombre
@@ -14,30 +10,79 @@ class UserService {
 	 * @param res
 	 * @returns
 	 */
-	public async getUser(req: express.Request, res: express.Response) {
-		let hasErr: boolean = false
-
+	public async deleteUser(req: express.Request, res: express.Response) {
 		// PETICION
-		const name: string = req.params.name
+		const id: number = +req.params.id
 
-		if (name?.length) {
-			const query = await execute(
-				`SELECT * FROM Users WHERE user_name = '${name}'`,
-			).catch((msg) => {
-				hasErr = true
-				return res.status(500).json({ success: true, msg })
-			})
+		await runSQL(
+			res,
+			`UPDATE Users SET 
+				active = 0,
+				date_out = '${new Date().toLocaleDateString('en-GB')}'
+			WHERE user_id = ${id}`,
+		)
+	}
 
-			// RETORNAR USUARIO
-			if (!hasErr && (query as OracleDB.Result<unknown>)?.rows?.length) {
-				const data = query as OracleDB.Result<unknown>
-				console.log(data.rows)
-				return res.status(200).json({ success: true, data: data.rows })
-			}
-		} else
-			return res
-				.status(500)
-				.json({ success: true, msg: 'Id de usuario invalido' })
+	/**
+	 * Borrar usuario
+	 * @description Obtener un usuario por nombre
+	 * @param req
+	 * @param res
+	 * @returns
+	 */
+	public async getUser(req: express.Request, res: express.Response) {
+		// PETICION
+		const id: number = +req.params.id
+		await runSQL(res, `SELECT * FROM Users WHERE user_id = '${id}'`)
+	}
+
+	/**
+	 * Crear usuarios
+	 * @description Crear nuevo usuario
+	 * @param req
+	 * @param res
+	 * @returns
+	 */
+	public async addUser(req: express.Request, res: express.Response) {
+		// PETICION
+		const user = req.body.user as User
+
+		await runSQL(
+			res,
+			`INSERT INTO Users VALUES ('${user.role}', '${user.name}', '${
+				user.password
+			}', ${user.active ? 1 : 0}, users_seq.nextval, ${
+				user.dateOut === null ? 'NULL' : `'${user.dateOut}'`
+			}, ${user.dateIn === null ? 'NULL' : `'${user.dateIn}'`}, ${
+				user.department > 0 ? user.department : 'NULL'
+			})`,
+		)
+	}
+
+	/**
+	 * Actualizar usuario
+	 * @description Edita un usuario existente
+	 * @param req
+	 * @param res
+	 * @returns
+	 */
+	public async updateUser(req: express.Request, res: express.Response) {
+		// PETICION
+		const user = req.body.user as User
+		const id: number = +req.params.id
+
+		await runSQL(
+			res,
+			`UPDATE Users SET 
+				user_role = '${user.role}',
+				user_name = '${user.name}', 
+				password = '${user.password}', 
+				active = ${user.active ? 1 : 0},
+				date_out = ${user.dateOut === null ? 'NULL' : `'${user.dateOut}'`}, 
+				date_in = ${user.dateIn === null ? 'NULL' : `'${user.dateIn}'`}, 
+				department_fk = ${user.department > 0 ? user.department : 'NULL'}
+			WHERE user_id = ${id}`,
+		)
 	}
 
 	/**
@@ -48,24 +93,10 @@ class UserService {
 	 * @returns
 	 */
 	public async getUsers(_req: express.Request, res: express.Response) {
-		let hasErr: boolean = false
-
-		// QUERY
-		const query = await execute(
-			`SELECT * FROM Users LEFT JOIN Departments on Users.department_fk = Departments.department_id`,
-		).catch((msg) => {
-			hasErr = true
-			return res.status(500).json({ success: false, msg })
-		})
-
-		// RETORNAR USUARIO
-		if (!hasErr && (query as OracleDB.Result<unknown>)?.rows?.length) {
-			const data = query as OracleDB.Result<unknown>
-			return res.status(200).json({ success: true, data: data.rows })
-		} else
-			return res
-				.status(500)
-				.json({ success: false, msg: 'Error al leer los usuarios' })
+		await runSQL(
+			res,
+			'SELECT * FROM Users LEFT JOIN Departments on Users.department_fk = Departments.department_id',
+		)
 	}
 }
 

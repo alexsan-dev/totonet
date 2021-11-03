@@ -16,9 +16,6 @@ const withAuth =
 		// OBTENER TOKEN
 		const token = req.headers['authorization']
 
-		// ROLE
-		let role = req.body?.user?.role
-
 		// ERROR SIN TOKEN
 		if (token === null)
 			return res.status(401).json({ success: false, msg: 'Token invalido' })
@@ -30,10 +27,8 @@ const withAuth =
 				(err: unknown, user: unknown) => {
 					if (err) return res.status(403).json({ success: false, msg: err })
 					else {
-						role = role ?? (user as UserData).role
-
-						if (!role || role === reqRole) {
-							req.body.user = user
+						let role = (user as UserData).role
+						if (!reqRole || role === reqRole) {
 							next()
 						} else
 							return res.status(403).json({

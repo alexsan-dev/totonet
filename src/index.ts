@@ -11,6 +11,7 @@ import modelController from 'controllers/model'
 import dataController from 'controllers/data'
 import authController from 'controllers/auth'
 import userController from 'controllers/user'
+import depController from 'controllers/department'
 
 // APP
 const app = express()
@@ -25,6 +26,7 @@ modelController(app)
 dataController(app)
 authController(app)
 userController(app)
+depController(app)
 
 // INICIAR APP
 app.listen(5000, () => {

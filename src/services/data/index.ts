@@ -20,11 +20,16 @@ class DataService {
 	 */
 	public async upload(req: express.Request, res: express.Response) {
 		// ERROR
-		const onError = (err: Error) =>
-			res.status(500).json({
-				success: false,
-				msg: `Error al insertar los datos: ${err}`,
-			})
+		let hasErr: boolean = false
+		const onError = (err: Error) => {
+			if (!hasErr) {
+				hasErr = true
+				res.status(500).json({
+					success: false,
+					msg: `Error al insertar los datos: ${err}`,
+				})
+			}
+		}
 
 		// CARGAR DATOS
 		const setData = async (data: string | Buffer) => {
@@ -40,7 +45,7 @@ class DataService {
 			await setRelationTables(resData).catch(onError)
 
 			// SALIR
-			return res.status(200).json({ success: true })
+			if (!hasErr) return res.status(200).json({ success: true })
 		}
 
 		// LEER DESDE PRUEBA

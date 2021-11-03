@@ -35,7 +35,7 @@ class AuthService {
 					? `INSERT INTRO Users (user_id, user_role, user_name, department_fk, password, dateIn) VALUES (
 					users_seq, ${user?.role}, ${user?.name}, (SELECT department_id FROM Departments WHERE department_name = '${user?.department}'), ${user?.password}, ${user?.dateIn}
 					)`
-					: `SELECT user_id, user_role, password FROM Users WHERE user_name = '${user?.name}'`,
+					: `SELECT user_id, user_role, password, active FROM Users WHERE user_name = '${user?.name}'`,
 			).catch((err) => {
 				hasErr = true
 				res.json({ success: false, msg: err })
@@ -45,7 +45,9 @@ class AuthService {
 				((query.rows &&
 					query.rows.length &&
 					// @ts-ignore
-					query.rows?.[0][2] === user.password) ||
+					query.rows?.[0][2] === user.password &&
+					// @ts-ignore
+					query.rows?.[0][3] === 1) ||
 					isNew) &&
 				!hasErr &&
 				user
