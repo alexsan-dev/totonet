@@ -32,7 +32,7 @@ import Styles from './style.module.scss'
 // TOOLS
 import onSubmit, { LoginData } from './events'
 
-const Login: React.FC = () => {
+const LoginView: React.FC = () => {
 	// MOSTRAR OCULTAR CONTRA
 	const [visiblePass, setVisiblePass] = useState(false)
 
@@ -146,4 +146,4 @@ const Login: React.FC = () => {
 	)
 }
 
-export default Login
+export default LoginView

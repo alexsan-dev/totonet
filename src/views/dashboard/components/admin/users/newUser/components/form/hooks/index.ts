@@ -16,7 +16,7 @@ const useDepartments = (
 		authFetch(history, 'http://localhost:5000/departments', { method: 'GET' })
 			.then((res) => res?.json())
 			.then((deps) => {
-				const list = (deps.data as (string | null | number)[][])?.map((dep) => ({
+				const list = (deps?.data as (string | null | number)[][])?.map((dep) => ({
 					id: dep[0] as number,
 					name: dep[1] as string,
 					total: dep[2] as number,

@@ -1,6 +1,6 @@
 import React from 'react'
-import Login from 'views/login'
+import IndexView from 'views/index'
 
-const Index: React.FC = () => <Login />
+const Index: React.FC = () => <IndexView />
 
 export default Index
