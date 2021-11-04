@@ -21,6 +21,7 @@ class JobService {
         INNER JOIN Requirements on JobRequirements.req_fk = Requirements.requirement_id
         INNER JOIN ReqFormats ON ReqFormats.req_fk = Requirements.requirement_id 
         INNER JOIN Formats on ReqFormats.format_fk = Formats.format_id
+				LEFT JOIN JobScores ON JobScores.job_fk = Jobs.job_id
         `,
 		)
 	}

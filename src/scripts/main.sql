@@ -35,6 +35,14 @@ CREATE TABLE Formats (
   PRIMARY KEY(format_id)
 );
 
+CREATE TABLE JobScores (
+  job_fk NUMBER NOT NULL,
+  job_score_id NUMBER,
+  score NUMBER,
+  PRIMARY KEY(job_score_id),
+  CONSTRAINT job_score_fk FOREIGN KEY (job_fk) REFERENCES Jobs (job_id)
+);
+
 CREATE TABLE DepartmentJobs (
   department_fk NUMBER NOT NULL,
   job_fk NUMBER NOT NULL,

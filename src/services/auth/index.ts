@@ -42,12 +42,12 @@ class AuthService {
 			})) as OracleDB.Result<unknown>
 
 			if (
-				((query.rows &&
-					query.rows.length &&
+				((query?.rows &&
+					query?.rows.length &&
 					// @ts-ignore
-					query.rows?.[0][2] === user.password &&
+					query?.rows?.[0][2] === user.password &&
 					// @ts-ignore
-					query.rows?.[0][3] === 1) ||
+					query?.rows?.[0][3] === 1) ||
 					isNew) &&
 				!hasErr &&
 				user

@@ -22,13 +22,14 @@ class ModelService {
 		})
 
 		// CREAR
-		await executeScript('main').catch((err) => {
-			hasErr = true
-			res.status(500).json({
-				success: false,
-				msg: `Error al ejecutar el script main: ${err}.`,
+		if (!hasErr)
+			await executeScript('main').catch((err) => {
+				hasErr = true
+				res.status(500).json({
+					success: false,
+					msg: `Error al ejecutar el script main: ${err}.`,
+				})
 			})
-		})
 
 		if (!hasErr) res.status(200).json({ success: true })
 		return
