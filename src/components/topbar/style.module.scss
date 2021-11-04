@@ -3,10 +3,12 @@
 	display: grid !important;
 	grid-template-columns: auto auto 1fr auto;
 	column-gap: 10px;
-	padding: 0 var(--margin);
+	padding: 0 calc(var(--margin) + 1px) !important;
 
-	& > img {
-		height: 35px;
+	& > a {
+		& > img {
+			height: 35px;
+		}
 	}
 
 	& > button {

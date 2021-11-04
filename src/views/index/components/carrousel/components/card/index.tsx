@@ -1,19 +1,24 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardMedia from '@mui/material/CardMedia'
+
+// MATERIAL
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
-import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import CardHeader from '@mui/material/CardHeader'
+import CardMedia from '@mui/material/CardMedia'
+import Avatar from '@mui/material/Avatar'
 import Chip from '@mui/material/Chip'
-import ImageTwoTone from '@mui/icons-material/ImageTwoTone'
+import Card from '@mui/material/Card'
 
+// ICONOS
+import ChatTwoToneIcon from '@mui/icons-material/ChatTwoTone'
+import ImageTwoTone from '@mui/icons-material/ImageTwoTone'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+
+// ESTILOS
 import Styles from './style.module.scss'
 
 interface JobCardProps {

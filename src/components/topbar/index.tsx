@@ -12,7 +12,7 @@ import PowerSettingsNewTwoToneIcon from '@mui/icons-material/PowerSettingsNewTwo
 import Logo from 'assets/logo.png'
 import useUserToken from 'hooks/auth'
 
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Styles from './style.module.scss'
 import logout from './events'
@@ -43,8 +43,13 @@ const HideOnScroll: React.FC<Props> = (props: Props) => {
 	)
 }
 
+interface TopBarProps {
+	title?: string
+	action?: JSX.Element
+}
+
 // TOPBAR
-const Topbar: React.FC = () => {
+const Topbar: React.FC<TopBarProps> = ({ title, action }) => {
 	// TOKEN
 	const token = useUserToken()
 
@@ -59,18 +64,22 @@ const Topbar: React.FC = () => {
 			<HideOnScroll>
 				<AppBar>
 					<Toolbar className={Styles.content}>
-						<img src={Logo} alt='Logo' />
-						<Typography variant='h6' component='div'>{`Dashboard de ${
-							userRoleName[token?.role ?? 'admin']
-						}`}</Typography>
+						<Link to='/'>
+							<img src={Logo} alt='Logo' />
+						</Link>
+						<Typography variant='h6' component='div'>
+							{title ?? `Dashboard de ${userRoleName[token?.role ?? 'admin']}`}
+						</Typography>
 						<div />
-						<Button
-							onClick={logoutHandler}
-							variant='outlined'
-							color='inherit'
-							startIcon={<PowerSettingsNewTwoToneIcon />}>
-							Cerrar sesión
-						</Button>
+						{action ?? (
+							<Button
+								onClick={logoutHandler}
+								variant='outlined'
+								color='inherit'
+								startIcon={<PowerSettingsNewTwoToneIcon />}>
+								Cerrar sesión
+							</Button>
+						)}
 					</Toolbar>
 				</AppBar>
 			</HideOnScroll>
@@ -83,7 +92,8 @@ HideOnScroll.defaultProps = {
 	window: undefined,
 }
 Topbar.defaultProps = {
-	window: undefined,
+	title: undefined,
+	action: undefined,
 }
 
 export default Topbar

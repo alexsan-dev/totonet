@@ -39,11 +39,13 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>): void => 
 					// CREAR
 					else
 						newJobs[job[8] as string] = {
+							id: +job[7],
 							name: job[8],
 							salary: +job[10],
 							image: job[9],
 							department: job[4],
 							categories: [job[15]],
+							score: job[30] ? +job[30] : 0,
 							requirements: [
 								{
 									name: job[20],

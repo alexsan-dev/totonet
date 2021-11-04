@@ -1,5 +1,7 @@
 interface Job {
+	id: number
 	name: string
+	score: number
 	salary: number
 	image: string
 	department: string
