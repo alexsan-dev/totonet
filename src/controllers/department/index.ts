@@ -1,5 +1,4 @@
 // IMPORTS
-import withAuth from 'middlewares'
 import { Controller } from 'models/global'
 import DepartmentService from 'services/department'
 
@@ -9,7 +8,7 @@ const depController: Controller = (app) => {
 	const service = new DepartmentService()
 
 	// ENDPOINTS
-	app.get('/departments', withAuth('admin'), service.getDepartments)
+	app.get('/departments', service.getDepartments)
 }
 
 export default depController

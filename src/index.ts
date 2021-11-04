@@ -7,11 +7,12 @@ import dotenv from 'dotenv'
 import startDb from 'utils/db'
 
 // CONTROLLERS
+import depController from 'controllers/department'
 import modelController from 'controllers/model'
 import dataController from 'controllers/data'
 import authController from 'controllers/auth'
 import userController from 'controllers/user'
-import depController from 'controllers/department'
+import jobController from 'controllers/job'
 
 // APP
 const app = express()
@@ -27,6 +28,7 @@ dataController(app)
 authController(app)
 userController(app)
 depController(app)
+jobController(app)
 
 // INICIAR APP
 app.listen(5000, () => {

@@ -31,6 +31,7 @@ INSERT INTO Formats (format_id, format_name) VALUES (5, 'png');
 INSERT INTO Formats (format_id, format_name) VALUES (6, 'jpg');
 INSERT INTO Formats (format_id, format_name) VALUES (7, 'jpeg');
 INSERT INTO Formats (format_id, format_name) VALUES (8, 'wmv');
+UPDATE Departments SET dep_fk = (SELECT department_id FROM Departments WHERE dep_name = 'Recruitment') WHERE department_id = 2;
 INSERT INTO DepartmentJobs (department_fk, job_fk, job_dep_id) VALUES (
 											(SELECT department_id FROM Departments WHERE dep_name = 'Recruitment'),
 											(SELECT job_id FROM Jobs WHERE job_name = 'JEFE'), 1);
@@ -123,29 +124,65 @@ INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
 																	(SELECT format_id FROM Formats WHERE format_name = 'jpeg'),
 																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Album de fotos'), 12);
 INSERT INTO DepartmentJobs (department_fk, job_fk, job_dep_id) VALUES (
+											(SELECT department_id FROM Departments WHERE dep_name = 'musical group'),
+											(SELECT job_id FROM Jobs WHERE job_name = 'Rapper'), 3);
+INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
+																(SELECT category_id FROM Categories WHERE category_name = 'musica'),
+																(SELECT job_id FROM Jobs WHERE job_name = 'Rapper'),
+																10
+															);
+INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
+																(SELECT category_id FROM Categories WHERE category_name = 'fama'),
+																(SELECT job_id FROM Jobs WHERE job_name = 'Rapper'),
+																11
+															);
+INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
+																(SELECT category_id FROM Categories WHERE category_name = 'cool'),
+																(SELECT job_id FROM Jobs WHERE job_name = 'Rapper'),
+																12
+															);
+INSERT INTO JobRequirements (req_fk, job_fk, job_req_id) VALUES (
+															(SELECT requirement_id FROM Requirements WHERE req_name = 'Certificado de lectura'),
+															(SELECT job_id from Jobs WHERE job_name = 'Rapper'), 6);
+INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
+																	(SELECT format_id FROM Formats WHERE format_name = 'pdf'),
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Certificado de lectura'), 13);
+INSERT INTO JobRequirements (req_fk, job_fk, job_req_id) VALUES (
+															(SELECT requirement_id FROM Requirements WHERE req_name = 'Video de audicion, 4 versos a eleccion'),
+															(SELECT job_id from Jobs WHERE job_name = 'Rapper'), 7);
+INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
+																	(SELECT format_id FROM Formats WHERE format_name = 'mp4'),
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Video de audicion, 4 versos a eleccion'), 14);
+INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
+																	(SELECT format_id FROM Formats WHERE format_name = 'mkv'),
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Video de audicion, 4 versos a eleccion'), 15);
+INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
+																	(SELECT format_id FROM Formats WHERE format_name = 'wmv'),
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Video de audicion, 4 versos a eleccion'), 16);
+INSERT INTO DepartmentJobs (department_fk, job_fk, job_dep_id) VALUES (
 											(SELECT department_id FROM Departments WHERE dep_name = 'Desarrollo'),
-											(SELECT job_id FROM Jobs WHERE job_name = 'Desarrollador backend'), 3);
+											(SELECT job_id FROM Jobs WHERE job_name = 'Desarrollador backend'), 4);
 INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
 																(SELECT category_id FROM Categories WHERE category_name = 'software'),
 																(SELECT job_id FROM Jobs WHERE job_name = 'Desarrollador backend'),
-																10
+																13
 															);
 INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
 																(SELECT category_id FROM Categories WHERE category_name = 'developer'),
 																(SELECT job_id FROM Jobs WHERE job_name = 'Desarrollador backend'),
-																11
+																14
 															);
 INSERT INTO JobCategories (category_fk, job_fk, job_category_id) VALUES (
 																(SELECT category_id FROM Categories WHERE category_name = 'java'),
 																(SELECT job_id FROM Jobs WHERE job_name = 'Desarrollador backend'),
-																12
+																15
 															);
 INSERT INTO JobRequirements (req_fk, job_fk, job_req_id) VALUES (
 															(SELECT requirement_id FROM Requirements WHERE req_name = 'Constancia de cursos aprobados con 200 creditos o mas'),
-															(SELECT job_id from Jobs WHERE job_name = 'Desarrollador backend'), 6);
+															(SELECT job_id from Jobs WHERE job_name = 'Desarrollador backend'), 8);
 INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
 																	(SELECT format_id FROM Formats WHERE format_name = 'pdf'),
-																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Constancia de cursos aprobados con 200 creditos o mas'), 13);
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Constancia de cursos aprobados con 200 creditos o mas'), 17);
 INSERT INTO ReqFormats (format_fk, req_fk, req_format_id) VALUES (
 																	(SELECT format_id FROM Formats WHERE format_name = 'png'),
-																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Constancia de cursos aprobados con 200 creditos o mas'), 14);
+																	(SELECT requirement_id FROM Requirements WHERE req_name = 'Constancia de cursos aprobados con 200 creditos o mas'), 18);

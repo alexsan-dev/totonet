@@ -9,19 +9,22 @@ const config: oracledb.ConnectionAttributes = {
 	connectString: 'localhost:49161/xe',
 }
 
+let pool: oracledb.Pool | null = null
+
 /**
  * Iniciar cliente oracle
  */
 export const startDb = async () => {
 	try {
 		oracledb.initOracleClient({ libDir: '/Library/instantclient_19_8' })
+		pool = await oracledb.createPool(config)
 	} catch (err) {
 		console.log(err)
 	}
 }
 
 export const getConnection = () => {
-	return oracledb.getConnection(config)
+	return pool?.getConnection()
 }
 
 /**
@@ -60,14 +63,14 @@ export async function executeScript<T>(
 					.map(async (query) => {
 						const parsed = query.replace(/[^a-zA-Z\(\) ,_\d\']/g, '')
 						if (parsed.length) {
-							const result = await db.execute(parsed).catch(reject)
+							const result = await execute(parsed).catch(reject)
 							return result
 						}
 					}) as (void | oracledb.Result<T>)[]
 
 				const results = await Promise.all(queries)
-				await db.commit()
-				await db.close()
+				await db?.commit()
+				await db?.close()
 				resolve(results)
 			}
 		})

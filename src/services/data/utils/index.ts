@@ -236,13 +236,13 @@ export async function setRelationTables<T>(
 	// SQL
 	const sql: string[] = []
 
-	const setDepartments = (departments: DepartmentsData) => {
-		// GLOBALES
-		let categoryIndex = 0,
-			reqIndex = 0,
-			formatIndex = 0,
-			jobIndex = 0
+	// GLOBALES
+	let categoryIndex = 0,
+		reqIndex = 0,
+		formatIndex = 0,
+		jobIndex = 0
 
+	const setDepartments = (departments: DepartmentsData) => {
 		departments.elements?.forEach((departamento) => {
 			if (departamento.name === 'departamento') {
 				// BUSCAR NOMBRE
@@ -342,6 +342,8 @@ export async function setRelationTables<T>(
 								})
 							}
 						})
+					} else if (depProps.name === 'departamentos') {
+						setDepartments(depProps)
 					}
 				})
 			}

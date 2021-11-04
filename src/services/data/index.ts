@@ -23,6 +23,7 @@ class DataService {
 		let hasErr: boolean = false
 		const onError = (err: Error) => {
 			if (!hasErr) {
+				console.log(err)
 				hasErr = true
 				res.status(500).json({
 					success: false,
