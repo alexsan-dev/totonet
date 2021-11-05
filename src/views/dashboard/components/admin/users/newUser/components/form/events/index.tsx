@@ -55,7 +55,7 @@ const onSubmit = (
 			if (op.success) {
 				if (onSuccess) onSuccess()
 				window.hideAlert()
-			}
+			} else window.Snack('Error al actualizar usuario')
 		})
 		.catch((err) => window.Snack(err.toString()))
 }

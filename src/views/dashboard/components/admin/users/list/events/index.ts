@@ -18,7 +18,7 @@ const deleteUser = (
 			if (data.success) {
 				window.Snack(`${user?.name} eliminado correctamente.`)
 				if (onSuccess) onSuccess()
-			}
+			} else window.Snack('Error al intentar borrar.')
 		})
 }
 

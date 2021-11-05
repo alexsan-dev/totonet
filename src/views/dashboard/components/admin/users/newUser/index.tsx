@@ -7,6 +7,7 @@ const showUser = (user?: User, onSuccess?: () => void, preview?: boolean): void 
 		body: '',
 		type: preview ? 'alert' : 'window',
 		fixed: !preview,
+		resetOnHide: true,
 		hideActions: !preview,
 		customElements: <NewUserForm user={user} onSuccess={onSuccess} preview={preview} />,
 	})

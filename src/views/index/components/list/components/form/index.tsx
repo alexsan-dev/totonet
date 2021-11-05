@@ -20,14 +20,58 @@ const Input = styled('input')({
 })
 
 const showApplyForm = (currentJob?: Job): void => {
+	// ENVIAR
+	const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
+		ev.preventDefault()
+
+		// DATOS
+		const formData = (ev.target as HTMLFormElement).elements as unknown as JobApply
+		const file = (formData.cv as unknown as HTMLInputElement)?.files?.[0]
+		const data: JobApply = {
+			department: currentJob?.department,
+			id: currentJob?.id || 0,
+			cui: +(formData.cui as unknown as HTMLInputElement)?.value,
+			name: (formData.name as unknown as HTMLInputElement)?.value,
+			lastName: (formData.lastName as unknown as HTMLInputElement)?.value,
+			email: (formData.email as unknown as HTMLInputElement)?.value,
+			address: (formData.address as unknown as HTMLInputElement)?.value,
+			phone: (formData.phone as unknown as HTMLInputElement)?.value?.toString(),
+		}
+
+		if (file) {
+			// DATOS CON ARCHIVOS
+			const customData = new FormData()
+			customData.append('data', JSON.stringify(data))
+			customData.append('file', file)
+
+			// FETCH
+			fetch('http://localhost:5000/jobs/apply', {
+				method: 'POST',
+				body: customData,
+			})
+				.then((res) => res?.json())
+				.then((resData) => {
+					if (resData?.success) {
+						window.Snack('Aplicacion enviada.')
+					} else window.Snack('Error al enviar.')
+					window.hideAlert()
+				})
+				.catch((err) => {
+					window.Snack(err.toString())
+					window.hideAlert()
+				})
+		}
+	}
+
 	window.Alert({
 		title: `Aplicar como ${currentJob?.name}`,
 		body: 'Llena el siguiente formulario y espera hasta que un revisor te contacte. 👌',
 		type: 'confirm',
 		hideActions: true,
+		resetOnHide: true,
 		customElements: (
 			<>
-				<form className={Styles.form}>
+				<form className={Styles.form} onSubmit={onSubmit}>
 					<div className={Styles.row}>
 						<TextField
 							required
@@ -94,7 +138,6 @@ const showApplyForm = (currentJob?: Job): void => {
 					<div className={Styles.row}>
 						<TextField
 							required
-							type='email'
 							fullWidth
 							name='address'
 							label='Dirección'
@@ -123,8 +166,8 @@ const showApplyForm = (currentJob?: Job): void => {
 							}}
 						/>
 					</div>
-					<label htmlFor='contained-button-file'>
-						<Input required accept='pdf/*' id='contained-button-file' multiple type='file' />
+					<label htmlFor='cv'>
+						<Input required accept='pdf/*' name='cv' id='cv' multiple type='file' />
 						{/* 
             // @ts-ignore */}
 						<Button

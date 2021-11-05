@@ -41,9 +41,9 @@ const onSubmit = (
 		})
 			.then((req) => req.json())
 			.then((credential) => {
-				if (credential.success) {
-					document.cookie = `role=${credential.role}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
-					document.cookie = `token=${credential.token}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
+				if (credential?.success) {
+					document.cookie = `role=${credential?.role}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
+					document.cookie = `token=${credential?.token}; SameSite=strict; Path=/; Max-Age=${3 * 60}`
 
 					window.Snack(`Bienvenido ${data.name}`)
 					history.push('/dashboard')
