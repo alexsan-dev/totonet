@@ -5,7 +5,7 @@ import { useEffect } from 'react'
  * @description Hook para obtener puestos desde db
  * @param setDepartments
  */
-const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>): void => {
+const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>, updates: number): void => {
 	useEffect(() => {
 		// PETICION
 		fetch('http://localhost:5000/jobs', { method: 'GET' })
@@ -60,7 +60,7 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>): void => 
 					setJobs(Object.values(newJobs))
 				} else window.Snack('Error al leer puestos.')
 			})
-	}, [])
+	}, [updates])
 }
 
 export default useJobs

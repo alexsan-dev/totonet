@@ -1,5 +1,4 @@
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
-import Typography from '@mui/material/Typography'
+import showWaitAlert from 'components/waitAlert'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import authFetch from 'utils/tools'
@@ -27,20 +26,7 @@ const onSubmit = (
 	}
 
 	// ALERTA DE ESPERA
-	window.Alert({
-		title: '',
-		body: '',
-		fixed: true,
-		type: 'window',
-		customElements: (
-			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-				<CircularProgress />
-				<Typography variant='body1' style={{ marginLeft: 'var(--margin)' }}>
-					Actualizando, espera un momento...
-				</Typography>
-			</div>
-		),
-	})
+	showWaitAlert()
 
 	// GUARDAR O CREAR USUARIO
 	authFetch(history, `http://localhost:5000/user${isNew ? '' : `/${user?.id}`}`, {

@@ -25,5 +25,11 @@ interface JobApply {
 	address?: string
 	phone?: string
 	department?: string
+	date?: string
 	cv?: File | Blob | null
+}
+
+interface JobScore {
+	id: number
+	score: number
 }

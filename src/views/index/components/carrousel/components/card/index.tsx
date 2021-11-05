@@ -23,9 +23,10 @@ import Styles from './style.module.scss'
 
 interface JobCardProps {
 	job?: Job
+	openMenu: (ev: React.MouseEvent) => void
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job }) => {
+const JobCard: React.FC<JobCardProps> = ({ job, openMenu }) => {
 	return (
 		<Card sx={{ maxWidth: 400 }}>
 			<CardHeader
@@ -36,7 +37,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
 					</Avatar>
 				}
 				action={
-					<IconButton aria-label='settings'>
+					<IconButton onClick={openMenu} aria-label='settings'>
 						<MoreVertIcon />
 					</IconButton>
 				}

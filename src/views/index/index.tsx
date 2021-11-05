@@ -15,8 +15,11 @@ const IndexView: React.FC = () => {
 	// PUESTOS
 	const [jobs, setJobs] = useState<Job[]>([])
 
+	// ACTUALIZACIONES
+	const [updates, setUpdate] = useState<number>(0)
+
 	// HOOKS
-	useJobs(setJobs)
+	useJobs(setJobs, updates)
 
 	return (
 		<>
@@ -32,8 +35,8 @@ const IndexView: React.FC = () => {
 			/>
 			<div className={Styles.container}>
 				<div className={Styles.content}>
-					<Carrousel jobs={jobs} />
-					<JobsList jobs={jobs} />
+					<Carrousel jobs={jobs} setUpdate={setUpdate} />
+					<JobsList jobs={jobs} setUpdate={setUpdate} />
 				</div>
 			</div>
 		</>

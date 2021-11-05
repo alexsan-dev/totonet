@@ -26,17 +26,17 @@ import showApplyForm from './components/form'
 
 import Styles from './style.module.scss'
 import searchJob, { filterJobs } from './events'
+import showScores from './components/score'
 
 // PROPS
 interface JobsListProps {
 	jobs: Job[]
+	setUpdate: React.Dispatch<React.SetStateAction<number>>
 }
 
-const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
+const JobsList: React.FC<JobsListProps> = ({ jobs, setUpdate }) => {
 	// LISTA
 	const [stateJobs, setJobs] = useState<Job[]>(jobs)
-
-	// PUESTO
 
 	// MENU
 	const [menuAnchor, setMenuAnchor] = useState<HTMLButtonElement | null>(null)
@@ -51,6 +51,12 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 	// APLICAR A PUESTO
 	const applyToJob = () => {
 		showApplyForm(currentJob)
+		handleClose()
+	}
+
+	// CALIFICAR A PUESTO
+	const scoreJob = () => {
+		showScores(setUpdate, currentJob)
 		handleClose()
 	}
 
@@ -136,7 +142,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 					'aria-labelledby': 'basic-button',
 				}}>
 				<MenuItem onClick={applyToJob}>Aplicar</MenuItem>
-				<MenuItem>Puntuar</MenuItem>
+				<MenuItem onClick={scoreJob}>Puntuar</MenuItem>
 			</Menu>
 		</div>
 	)

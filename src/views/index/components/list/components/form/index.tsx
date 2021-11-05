@@ -12,6 +12,7 @@ import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone'
 import LocalPhoneTwoToneIcon from '@mui/icons-material/LocalPhoneTwoTone'
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
 import Button from '@mui/material/Button'
+import showWaitAlert from 'components/waitAlert'
 import { styled } from '@mui/material/styles'
 import Styles from './style.module.scss'
 
@@ -36,6 +37,7 @@ const showApplyForm = (currentJob?: Job): void => {
 			email: (formData.email as unknown as HTMLInputElement)?.value,
 			address: (formData.address as unknown as HTMLInputElement)?.value,
 			phone: (formData.phone as unknown as HTMLInputElement)?.value?.toString(),
+			date: new Date().toLocaleDateString('en-GB'),
 		}
 
 		if (file) {
@@ -43,6 +45,8 @@ const showApplyForm = (currentJob?: Job): void => {
 			const customData = new FormData()
 			customData.append('data', JSON.stringify(data))
 			customData.append('file', file)
+
+			showWaitAlert()
 
 			// FETCH
 			fetch('http://localhost:5000/jobs/apply', {
