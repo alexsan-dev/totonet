@@ -9,11 +9,13 @@ const userController: Controller = (app) => {
 	const service = new UserService()
 
 	// ENDPOINTS
+	app.delete('/user/:id', withAuth('admin'), service.deleteUser)
 	app.put('/user/:id', withAuth('admin'), service.updateUser)
+
 	app.get('/user/:id', withAuth('admin'), service.getUser)
 	app.get('/users', withAuth('admin'), service.getUsers)
+
 	app.post('/user', withAuth('admin'), service.addUser)
-	app.delete('/user/:id', service.deleteUser)
 }
 
 export default userController

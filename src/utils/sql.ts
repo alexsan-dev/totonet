@@ -13,7 +13,8 @@ const runSQL = async (res: express.Response, sql: string) => {
 	let hasErr: boolean = false
 
 	// QUERY
-	const query = await execute(sql).catch(() => {
+	const query = await execute(sql).catch((err) => {
+		console.log(err)
 		hasErr = true
 	})
 

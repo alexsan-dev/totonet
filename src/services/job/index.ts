@@ -1,6 +1,6 @@
 import express from 'express'
 import fileUpload from 'express-fileupload'
-import { JobApply } from 'models/job'
+import { JobApply, JobScore } from 'models/job'
 import OracleDB from 'oracledb'
 import { execute } from 'utils/db'
 import runSQL from 'utils/sql'
@@ -31,6 +31,12 @@ class JobService {
 		)
 	}
 
+	/**
+	 * Crear aplicacion
+	 * @description Crea una nueva apply a un puesto y asigna un reclutador disponible
+	 * @param req
+	 * @param res
+	 */
 	public async newApply(req: express.Request, res: express.Response) {
 		// DATOS Y ARCHIVO
 		const data = JSON.parse(req.body.data || '{}') as JobApply
@@ -97,7 +103,7 @@ class JobService {
 								data.lastName
 							}', '${data.email}', '${data.address}', '${
 								data.phone
-							}', '${filePath}')`,
+							}', '${filePath}'), '${data.date}'`,
 						).catch(onError)
 					else {
 						hasErr = true
@@ -131,7 +137,7 @@ class JobService {
 							if (lastUser !== -1) {
 								// INSERTAR APPLY DE PUESTO
 								await execute(
-									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}')`,
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
 								).catch(onError)
 							} else {
 								hasErr = true
@@ -152,6 +158,24 @@ class JobService {
 
 			if (!hasErr) res.status(200).json({ success: true })
 		} else res.status(200).json({ success: false, msg: `Body invalido.` })
+	}
+
+	/**
+	 * Puntuar puesto
+	 * @description Puntuar puesto con numeros del 1 al 5
+	 * @param req
+	 * @param res
+	 * @returns
+	 */
+	public async setScore(req: express.Request, res: express.Response) {
+		const score = req.body as JobScore | undefined
+
+		if (score)
+			return await runSQL(
+				res,
+				`INSERT INTO JobScores VALUES (jobs_score_seq.nextval, ${score?.id}, ${score?.score})`,
+			)
+		else return res.status(200).json({ success: false, msg: 'Body invalido' })
 	}
 }
 

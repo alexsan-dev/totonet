@@ -65,8 +65,10 @@ class AuthService {
 						},
 					),
 				})
-			} else
-				return res.status(200).json({ success: false, msg: 'No autorizado' })
+			} else {
+				if (!hasErr)
+					return res.status(200).json({ success: false, msg: 'No autorizado' })
+			}
 		}
 	}
 

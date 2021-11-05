@@ -6,5 +6,11 @@ export interface JobApply {
 	email: string
 	address: string
 	phone: string
+	date: string
 	department: string
+}
+
+export interface JobScore {
+	id: number
+	score: number
 }
