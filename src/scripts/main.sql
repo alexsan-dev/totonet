@@ -92,8 +92,24 @@ CREATE TABLE Users (
   CONSTRAINT department_user_fk FOREIGN KEY (department_fk) REFERENCES Departments (department_id)
 );
 
+CREATE TABLE JobsApply (
+  user_fk NUMBER NOT NULL,
+  job_fk NUMBER NOT NULL,
+  job_apply_id NUMBER,
+  cui NUMBER,
+	apply_name VARCHAR2(250),
+	last_name VARCHAR2(250),
+	email VARCHAR2(250),
+	apply_address VARCHAR2(250),
+	phone VARCHAR2(250),
+	cv VARCHAR2(250),
+  PRIMARY KEY(job_apply_id),
+  CONSTRAINT job_apply_fk FOREIGN KEY (job_fk) REFERENCES Jobs (job_id),
+  CONSTRAINT job_apply_user_fk FOREIGN KEY (user_fk) REFERENCES Users (user_id)
+);
+
 CREATE SEQUENCE users_seq START WITH 2 INCREMENT BY 1 CACHE 100;
+CREATE SEQUENCE jobs_apply_seq START WITH 1 INCREMENT BY 1 CACHE 100;
 
 INSERT INTO Users VALUES ('admin', 'admin', 'admin', 1, 1, NULL, NULL, NULL);
 COMMIT;
-

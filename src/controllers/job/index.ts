@@ -9,6 +9,7 @@ const jobController: Controller = (app) => {
 
 	// ENDPOINTS
 	app.get('/jobs', service.getJobs)
+	app.post('/jobs/apply', service.newApply)
 }
 
 export default jobController

@@ -1,5 +1,10 @@
 import express from 'express'
+import fileUpload from 'express-fileupload'
+import { JobApply } from 'models/job'
+import OracleDB from 'oracledb'
+import { execute } from 'utils/db'
 import runSQL from 'utils/sql'
+import path from 'path'
 
 class JobService {
 	/**
@@ -24,6 +29,129 @@ class JobService {
 				LEFT JOIN JobScores ON JobScores.job_fk = Jobs.job_id
         `,
 		)
+	}
+
+	public async newApply(req: express.Request, res: express.Response) {
+		// DATOS Y ARCHIVO
+		const data = JSON.parse(req.body.data || '{}') as JobApply
+		const file = req.files?.file as fileUpload.UploadedFile
+
+		if (data && file) {
+			let hasErr: boolean = false
+			let filePath: string = ''
+
+			// MOVER ARCHIVO
+			try {
+				filePath = `./storage/${file.name}`
+				file.mv(filePath)
+				filePath = path.resolve(filePath)
+			} catch {
+				hasErr = true
+			}
+
+			if (filePath.length) {
+				// ERROR
+				const onError = (err: Error) => {
+					if (!hasErr) {
+						hasErr = true
+						res.status(200).json({
+							success: false,
+							msg: `Error al insertar los datos: ${err}`,
+						})
+					}
+				}
+
+				// OBTENER USUARIOS CON CVS
+				const usersQuery = execute(
+					'SELECT * FROM Users LEFT JOIN JobsApply ON JobsApply.user_fk = Users.user_id LEFT JOIN Departments ON Users.department_fk = Departments.department_id',
+				).catch(onError)
+				const query = (await usersQuery) as OracleDB.Result<unknown>
+
+				// ORGANIZAR USUARIOS CON PUESTOS
+				const rows = query?.rows as string[] | undefined
+				const jobApply: { [id: number]: number } = {}
+
+				if (rows?.length) {
+					rows?.forEach((job) => {
+						if (
+							(job[0] as unknown as string) === 'recruiter' &&
+							(job[3] as unknown as number) === 1 &&
+							(job[19] as unknown as string) === data.department
+						) {
+							jobApply[job[4] as unknown as number] =
+								(jobApply[job[4] as unknown as number] || 0) + 1
+						}
+					})
+
+					// ORDENAR
+					const sortedJobs = Object.entries(jobApply).sort(
+						(entryA, entryB) => entryA[1] - entryB[1],
+					)
+
+					// INSERTAR APPLY DE PUESTO
+					if (sortedJobs?.[0]?.[0])
+						await execute(
+							`INSERT INTO JobsApply VALUES (${+sortedJobs[0][0]}, ${
+								data.id
+							}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${
+								data.lastName
+							}', '${data.email}', '${data.address}', '${
+								data.phone
+							}', '${filePath}')`,
+						).catch(onError)
+					else {
+						hasErr = true
+						res.status(200).json({
+							success: false,
+							msg: `Error al insertar`,
+						})
+					}
+				} else {
+					if (!hasErr) {
+						// CREAR UNO NUEVO
+						const usersQuery = execute(
+							'SELECT * FROM Users LEFT JOIN Departments ON Users.department_fk = Departments.department_id',
+						).catch(onError)
+
+						const usersResult = (await usersQuery) as OracleDB.Result<unknown>
+
+						// BUSCAR RECLUTADOR
+						let lastUser: number = -1
+						usersResult?.rows?.forEach((row) => {
+							if (
+								(row as string[])[0] === 'recruiter' &&
+								(row as string[])[9] === data.department &&
+								(row as number[])[3] === 1
+							)
+								lastUser = (row as number[])[4]
+						})
+
+						// INSERTAR EN USER JOBS
+						if (!hasErr) {
+							if (lastUser !== -1) {
+								// INSERTAR APPLY DE PUESTO
+								await execute(
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}')`,
+								).catch(onError)
+							} else {
+								hasErr = true
+								res.status(200).json({
+									success: false,
+									msg: `Sin reclutadores disponibles`,
+								})
+							}
+						}
+					}
+				}
+			} else {
+				hasErr = true
+				res
+					.status(200)
+					.json({ success: false, msg: 'Error archivo no encontrado' })
+			}
+
+			if (!hasErr) res.status(200).json({ success: true })
+		} else res.status(200).json({ success: false, msg: `Body invalido.` })
 	}
 }
 

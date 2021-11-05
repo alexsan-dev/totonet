@@ -23,9 +23,8 @@ class DataService {
 		let hasErr: boolean = false
 		const onError = (err: Error) => {
 			if (!hasErr) {
-				console.log(err)
 				hasErr = true
-				res.status(500).json({
+				res.status(200).json({
 					success: false,
 					msg: `Error al insertar los datos: ${err}`,
 				})
@@ -59,7 +58,7 @@ class DataService {
 			fs.readFile('test/data.xml', async (err, data) => {
 				if (err) {
 					return res
-						.status(404)
+						.status(200)
 						.json({ success: false, msg: `Error al leer el archivo: ${err}` })
 				} else await setData(data).catch(onError)
 			})
@@ -68,7 +67,7 @@ class DataService {
 			const { xml } = req.body
 			if (!xml.length) {
 				return res
-					.status(404)
+					.status(200)
 					.json({ success: false, msg: `Error al leer el archivo xml` })
 			} else {
 				await setData(xml).catch(onError)

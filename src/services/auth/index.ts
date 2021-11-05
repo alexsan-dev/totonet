@@ -66,7 +66,7 @@ class AuthService {
 					),
 				})
 			} else
-				return res.status(403).json({ success: false, msg: 'No autorizado' })
+				return res.status(200).json({ success: false, msg: 'No autorizado' })
 		}
 	}
 

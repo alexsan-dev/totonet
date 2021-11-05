@@ -13,11 +13,18 @@ import dataController from 'controllers/data'
 import authController from 'controllers/auth'
 import userController from 'controllers/user'
 import jobController from 'controllers/job'
+import fileUpload from 'express-fileupload'
 
 // APP
 const app = express()
 app.use(cors({ origin: '*' }))
 app.use(express.json())
+app.use(
+	fileUpload({
+		limits: { fileSize: 50 * 1024 * 1024 },
+	}),
+)
+
 startDb()
 
 dotenv.config()

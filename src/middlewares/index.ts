@@ -18,20 +18,20 @@ const withAuth =
 
 		// ERROR SIN TOKEN
 		if (token === null)
-			return res.status(401).json({ success: false, msg: 'Token invalido' })
+			return res.status(200).json({ success: false, msg: 'Token invalido' })
 		// VERIFICAR
 		else {
 			jwt.verify(
 				token || '',
 				process.env.TOKEN_SECRET as string,
 				(err: unknown, user: unknown) => {
-					if (err) return res.status(403).json({ success: false, msg: err })
+					if (err) return res.status(200).json({ success: false, msg: err })
 					else {
 						let role = (user as UserData).role
 						if (!reqRole || role === reqRole) {
 							next()
 						} else
-							return res.status(403).json({
+							return res.status(200).json({
 								success: false,
 								msg: `El usuario debe ser ${reqRole} para acceder a esta ruta.`,
 							})

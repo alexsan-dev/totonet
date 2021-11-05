@@ -26,7 +26,7 @@ const runSQL = async (res: express.Response, sql: string) => {
 				.json({ success: true, data: data.rows, metaData: data.metaData })
 		} else return res.status(200).json({ success: true, data: [] })
 	} else
-		return res.status(500).json({ success: false, msg: 'Error al correr sql.' })
+		return res.status(200).json({ success: false, msg: 'Error al correr sql.' })
 }
 
 export default runSQL
