@@ -60,6 +60,7 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>, updates: 
 					setJobs(Object.values(newJobs))
 				} else window.Snack('Error al leer puestos.')
 			})
+			.catch((err) => window.Snack(err.toString()))
 	}, [updates])
 }
 

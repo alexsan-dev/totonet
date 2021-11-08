@@ -49,6 +49,7 @@ const authFetch = async (
 								? {
 										...JSON.parse(init?.body as string).user,
 										role: cookie.role,
+										uid: cookie.uid,
 								  }
 								: undefined,
 					  })

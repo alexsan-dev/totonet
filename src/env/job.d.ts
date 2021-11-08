@@ -26,6 +26,8 @@ interface JobApply {
 	phone?: string
 	department?: string
 	date?: string
+	jobName?: string
+	applyId?: number
 	cv?: File | Blob | null
 }
 

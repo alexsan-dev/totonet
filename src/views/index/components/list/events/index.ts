@@ -61,14 +61,16 @@ const searchJob = (
  * @param user
  */
 export const filterJobs = (
-	filter: keyof Job,
-	setJobs: React.Dispatch<React.SetStateAction<Job[]>>
+	filter: keyof Job | keyof JobApply,
+	setJobs:
+		| React.Dispatch<React.SetStateAction<Job[]>>
+		| React.Dispatch<React.SetStateAction<JobApply[]>>
 ): void => {
-	setJobs((jobs) => {
-		return [...jobs].sort((jobA, jobB) =>
-			typeof jobA[filter] === 'number'
-				? jobA.salary - jobB.salary
-				: jobA[filter].toString().localeCompare(jobB[filter].toString())
+	setJobs((jobs: unknown) => {
+		return [...(jobs as Job[])].sort((jobA, jobB) =>
+			typeof jobA[filter as keyof Job] === 'number'
+				? (jobA[filter as keyof Job] as number) - (jobB[filter as keyof Job] as number)
+				: jobA[filter as keyof Job].toString().localeCompare(jobB[filter as keyof Job].toString())
 		)
 	})
 }

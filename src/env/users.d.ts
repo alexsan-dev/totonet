@@ -13,6 +13,7 @@ interface User {
 interface UserToken {
 	token?: string
 	role?: UserRole
+	uid?: number
 }
 
 type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter'

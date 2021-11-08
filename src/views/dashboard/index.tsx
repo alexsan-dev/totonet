@@ -8,7 +8,8 @@ import Topbar from 'components/topbar'
 import UploadView from './components/admin/upload'
 import UsersView from './components/admin/users'
 
-// SECCIONES DE COORDINADOR
+// SECCIONES DE REVISOR
+import JobsList from './components/recruiter/jobs'
 
 // ESTILOS
 import Styles from './style.module.scss'
@@ -27,7 +28,11 @@ const DashboardView: React.FC = () => {
 						<UsersView />
 					</>
 				)) ||
-					(token?.role === 'coord' && <></>)}
+					(token?.role === 'recruiter' && (
+						<>
+							<JobsList />
+						</>
+					))}
 			</div>
 		</div>
 	)

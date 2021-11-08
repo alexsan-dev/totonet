@@ -37,7 +37,7 @@ const showApplyForm = (currentJob?: Job): void => {
 			email: (formData.email as unknown as HTMLInputElement)?.value,
 			address: (formData.address as unknown as HTMLInputElement)?.value,
 			phone: (formData.phone as unknown as HTMLInputElement)?.value?.toString(),
-			date: new Date().toLocaleDateString('en-GB'),
+			date: new Date().toLocaleString('en-GB'),
 		}
 
 		if (file) {
