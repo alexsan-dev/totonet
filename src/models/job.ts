@@ -8,6 +8,7 @@ export interface JobApply {
 	phone: string
 	date: string
 	department: string
+	applyId?: number
 }
 
 export interface JobScore {

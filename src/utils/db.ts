@@ -54,7 +54,7 @@ export async function executeScript<T>(
 	return new Promise((resolve, reject) => {
 		fs.readFile(`src/scripts/${path}.sql`, async (err, data) => {
 			if (err) {
-				reject(`Error al leer el script ${path}: ${err}`)
+				reject(err)
 			} else {
 				const db = await getConnection()
 				const queries = data

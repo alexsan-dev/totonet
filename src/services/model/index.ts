@@ -1,6 +1,7 @@
 // IMPORTS
 import { executeScript } from 'utils/db'
 import express from 'express'
+import sendError, { sendData } from 'utils/res'
 
 class ModelService {
 	/**
@@ -15,23 +16,17 @@ class ModelService {
 		// EMPEZAR
 		await executeScript('clear').catch((err) => {
 			hasErr = true
-			res.status(200).json({
-				success: false,
-				msg: `Error al ejecutar el script main: ${err}.`,
-			})
+			sendError(res, err)
 		})
 
 		// CREAR
 		if (!hasErr)
 			await executeScript('main').catch((err) => {
 				hasErr = true
-				res.status(200).json({
-					success: false,
-					msg: `Error al ejecutar el script main: ${err}.`,
-				})
+				sendError(res, err)
 			})
 
-		if (!hasErr) res.status(200).json({ success: true })
+		if (!hasErr) sendData(res, {})
 		return
 	}
 }

@@ -1,4 +1,6 @@
 import { UserData } from 'models/auth'
+import { UserRole } from 'models/user'
+import sendError from 'utils/res'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 
@@ -11,30 +13,25 @@ import jwt from 'jsonwebtoken'
  * @returns
  */
 const withAuth =
-	(reqRole?: string) =>
+	(reqRole?: UserRole) =>
 	(req: express.Request, res: express.Response, next: express.NextFunction) => {
 		// OBTENER TOKEN
 		const token = req.headers['authorization']
 
 		// ERROR SIN TOKEN
-		if (token === null)
-			return res.status(200).json({ success: false, msg: 'Token invalido' })
+		if (token === null) return sendError(res)
 		// VERIFICAR
 		else {
 			jwt.verify(
 				token || '',
 				process.env.TOKEN_SECRET as string,
 				(err: unknown, user: unknown) => {
-					if (err) return res.status(200).json({ success: false, msg: err })
+					if (err) return sendError(res, err as string)
 					else {
 						let role = (user as UserData).role
 						if (!reqRole || role === reqRole) {
 							next()
-						} else
-							return res.status(200).json({
-								success: false,
-								msg: `El usuario debe ser ${reqRole} para acceder a esta ruta.`,
-							})
+						} else return sendError(res)
 					}
 				},
 			)

@@ -5,6 +5,7 @@ import { executeScript } from 'utils/db'
 import express from 'express'
 import xml2js from 'xml-js'
 import fs from 'fs'
+import sendError, { sendData } from 'utils/res'
 
 class DataService {
 	// CONSTRUCTOR
@@ -24,10 +25,7 @@ class DataService {
 		const onError = (err: Error) => {
 			if (!hasErr) {
 				hasErr = true
-				res.status(200).json({
-					success: false,
-					msg: `Error al insertar los datos: ${err}`,
-				})
+				sendError(res, err)
 			}
 		}
 
@@ -45,7 +43,7 @@ class DataService {
 			await setRelationTables(resData).catch(onError)
 
 			// SALIR
-			if (!hasErr) return res.status(200).json({ success: true })
+			if (!hasErr) return sendData(res, {})
 		}
 
 		// LEER DESDE PRUEBA
@@ -57,18 +55,14 @@ class DataService {
 
 			fs.readFile('test/data.xml', async (err, data) => {
 				if (err) {
-					return res
-						.status(200)
-						.json({ success: false, msg: `Error al leer el archivo: ${err}` })
+					return sendError(res, err)
 				} else await setData(data).catch(onError)
 			})
 		} else {
 			// DATOS
 			const { xml } = req.body
 			if (!xml.length) {
-				return res
-					.status(200)
-					.json({ success: false, msg: `Error al leer el archivo xml` })
+				return sendError(res)
 			} else {
 				await setData(xml).catch(onError)
 			}

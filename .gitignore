@@ -82,6 +82,9 @@ web_modules/
 .next
 out
 
+lib/
+rollup.config.js
+
 # Nuxt.js build / generate output
 .nuxt
 dist

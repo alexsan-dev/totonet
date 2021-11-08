@@ -5,8 +5,27 @@ import OracleDB from 'oracledb'
 import { execute } from 'utils/db'
 import runSQL from 'utils/sql'
 import path from 'path'
+import sendError, { sendData } from 'utils/res'
+import { UserData } from 'models/auth'
+import nodemailer from 'nodemailer'
+import AuthService from 'services/auth'
 
 class JobService {
+	// GLOBALES
+	private apiAccount: { user: string; pass: string }
+	private transporter: nodemailer.Transporter
+
+	// CONSTRUCTOR
+	constructor() {
+		this.apiAccount = { user: '', pass: '' }
+		this.transporter = nodemailer.createTransport({
+			host: 'gmail',
+			port: 587,
+			secure: false,
+			auth: this.apiAccount,
+		})
+	}
+
 	/**
 	 * Obtener departamentos
 	 * @description Obtener toda la lista de departamentos
@@ -32,8 +51,8 @@ class JobService {
 	}
 
 	/**
-	 * Crear aplicacion
-	 * @description Crea una nueva apply a un puesto y asigna un reclutador disponible
+	 * Nueva aplicacion
+	 * @description Agregar aplicacion para trabajo
 	 * @param req
 	 * @param res
 	 */
@@ -60,10 +79,7 @@ class JobService {
 				const onError = (err: Error) => {
 					if (!hasErr) {
 						hasErr = true
-						res.status(200).json({
-							success: false,
-							msg: `Error al insertar los datos: ${err}`,
-						})
+						sendError(res, err)
 					}
 				}
 
@@ -82,7 +98,7 @@ class JobService {
 						if (
 							(job[0] as unknown as string) === 'recruiter' &&
 							(job[3] as unknown as number) === 1 &&
-							(job[19] as unknown as string) === data.department
+							(job[20] as unknown as string) === data.department
 						) {
 							jobApply[job[4] as unknown as number] =
 								(jobApply[job[4] as unknown as number] || 0) + 1
@@ -103,14 +119,11 @@ class JobService {
 								data.lastName
 							}', '${data.email}', '${data.address}', '${
 								data.phone
-							}', '${filePath}'), '${data.date}'`,
+							}', '${filePath}', '${data.date}')`,
 						).catch(onError)
 					else {
 						hasErr = true
-						res.status(200).json({
-							success: false,
-							msg: `Error al insertar`,
-						})
+						sendError(res)
 					}
 				} else {
 					if (!hasErr) {
@@ -137,45 +150,124 @@ class JobService {
 							if (lastUser !== -1) {
 								// INSERTAR APPLY DE PUESTO
 								await execute(
-									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}')`,
 								).catch(onError)
 							} else {
 								hasErr = true
-								res.status(200).json({
-									success: false,
-									msg: `Sin reclutadores disponibles`,
-								})
+								sendError(res)
 							}
 						}
 					}
 				}
 			} else {
 				hasErr = true
-				res
-					.status(200)
-					.json({ success: false, msg: 'Error archivo no encontrado' })
+				sendError(res)
 			}
 
-			if (!hasErr) res.status(200).json({ success: true })
-		} else res.status(200).json({ success: false, msg: `Body invalido.` })
+			if (!hasErr) sendData(res, {})
+		} else sendError(res)
 	}
 
 	/**
-	 * Puntuar puesto
-	 * @description Puntuar puesto con numeros del 1 al 5
+	 * Agregar puntuacion
+	 * @description Agregar puntuacion de aplicacion
 	 * @param req
 	 * @param res
-	 * @returns
 	 */
 	public async setScore(req: express.Request, res: express.Response) {
-		const score = req.body as JobScore | undefined
-
-		if (score)
-			return await runSQL(
+		const score = req.body as JobScore
+		if (score) {
+			return runSQL(
 				res,
-				`INSERT INTO JobScores VALUES (jobs_score_seq.nextval, ${score?.id}, ${score?.score})`,
+				`INSERT INTO JobScores VALUES (jobs_score_seq.nextval, ${score.id}, ${score.score})`,
 			)
-		else return res.status(200).json({ success: false, msg: 'Body invalido' })
+		} else return sendError(res)
+	}
+
+	/**
+	 * Obtener aplicaciones a puesto
+	 * @description Retorna toda la lista de aplicaciones a los puestos
+	 * @param req
+	 * @param res
+	 */
+	public async getApps(req: express.Request, res: express.Response) {
+		const user = req.body.user as UserData | undefined
+
+		if (user) {
+			if (user.uid) {
+				return runSQL(
+					res,
+					`SELECT * FROM JobsApply INNER JOIN JOBS ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.user_fk = ${+user.uid}`,
+				)
+			} else return sendError(res)
+		} else return sendError(res)
+	}
+
+	public async acceptApply(req: express.Request, res: express.Response) {
+		const job = req.body.job as JobApply
+		const user = req.body.user as UserData | undefined
+		const accept = req.body.accept as boolean
+
+		if (job) {
+			// ERROR
+			let hasErr = false
+			const onError = (err: Error) => {
+				if (!hasErr) {
+					hasErr = true
+					sendError(res, err)
+				}
+			}
+
+			// SELECCIONAR APPLY
+			const query = execute(
+				`SELECT * FROM JobsApply INNER JOIN JOBS ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.user_fk WHERE JobsApply.job_apply_id = ${job.applyId}`,
+			)
+			query.catch(onError)
+			const result = (await query) as OracleDB.Result<string>
+
+			// @ts-ignore
+			const jobApply = result[0] as string[]
+			const password = Math.round(Math.random() * 10000).toString()
+
+			// ENVIAR CORREO
+			this.transporter.sendMail(
+				{
+					from: this.apiAccount.user,
+					to: jobApply[6],
+					subject: 'Totonet© | Jobs',
+					text: `Tu aplicacion para el puesto ${jobApply[12]} ha sido ${
+						accept ? 'Aceptada' : 'Rechazada'
+					}. ${
+						accept
+							? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[4]}\npassword: ${password}`
+							: ''
+					}`,
+				},
+				async (err, msg) => {
+					if (!hasErr) {
+						if (err) sendError(res)
+						else {
+							if (accept) {
+								// CREAR USUARIO
+								const userService = new AuthService()
+								await userService
+									.getUser(req, res, true, {
+										name: jobApply[4],
+										uid: user?.uid ?? 0,
+										password,
+										role: 'apply',
+										dateIn: new Date().toLocaleString('en-Gb'),
+									})
+									.catch(onError)
+							}
+
+							// SALIR
+							if (!hasErr) sendData(res, { msg })
+						}
+					}
+				},
+			)
+		} else return sendError(res)
 	}
 }
 

@@ -4,6 +4,7 @@ import { execute } from 'utils/db'
 import OracleDB from 'oracledb'
 import jwt from 'jsonwebtoken'
 import express from 'express'
+import sendError, { sendData } from 'utils/res'
 
 class AuthService {
 	constructor() {
@@ -20,13 +21,14 @@ class AuthService {
 	 * @param isNew
 	 * @returns
 	 */
-	private async getUser(
+	public async getUser(
 		req: express.Request,
 		res: express.Response,
 		isNew: boolean = false,
+		customUser?: UserData,
 	) {
 		// DATA
-		const user = req.body.user as UserData | undefined
+		const user = req.body.user ?? (customUser as UserData | undefined)
 		let hasErr: boolean = false
 		if (user) {
 			// VALIDAR USUARIO
@@ -38,7 +40,7 @@ class AuthService {
 					: `SELECT user_id, user_role, password, active FROM Users WHERE user_name = '${user?.name}'`,
 			).catch((err) => {
 				hasErr = true
-				res.json({ success: false, msg: err })
+				sendError(res, err)
 			})) as OracleDB.Result<unknown>
 
 			if (
@@ -52,8 +54,9 @@ class AuthService {
 				!hasErr &&
 				user
 			) {
-				return res.json({
-					success: true,
+				return sendData(res, {
+					// @ts-ignore
+					uid: query.rows?.[0][0],
 					// @ts-ignore
 					role: query.rows?.[0][1],
 					token: jwt.sign(
@@ -66,8 +69,7 @@ class AuthService {
 					),
 				})
 			} else {
-				if (!hasErr)
-					return res.status(200).json({ success: false, msg: 'No autorizado' })
+				if (!hasErr) return sendError(res)
 			}
 		}
 	}
