@@ -252,7 +252,7 @@ class JobService {
 								accept ? 'Aceptada' : 'Rechazada'
 							}. ${
 								accept
-									? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[4]}\npassword: ${password}`
+									? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[3]}\npassword: ${password}`
 									: ''
 							}`,
 						},
@@ -266,7 +266,7 @@ class JobService {
 										const userService = new AuthService()
 										await userService
 											.getUser(req, res, true, {
-												name: jobApply[4],
+												name: jobApply[3],
 												uid: user?.uid ?? 0,
 												password,
 												role: 'apply',
