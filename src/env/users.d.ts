@@ -16,4 +16,4 @@ interface UserToken {
 	uid?: number
 }
 
-type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter'
+type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter' | 'apply'
