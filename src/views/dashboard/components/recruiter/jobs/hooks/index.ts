@@ -7,6 +7,7 @@ import authFetch from 'utils/tools'
  * @param setJobs
  */
 const useJobs = (
+	updates: number,
 	setJobs: React.Dispatch<React.SetStateAction<JobApply[]>>,
 	history: RouteComponentProps['history'],
 	uid?: number
@@ -47,7 +48,7 @@ const useJobs = (
 				})
 				.catch((err) => window.Snack(err.toString()))
 		}
-	}, [uid])
+	}, [updates, uid])
 }
 
 export default useJobs

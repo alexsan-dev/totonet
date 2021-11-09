@@ -3,27 +3,29 @@ import React, { useState } from 'react'
 import useUserToken from 'hooks/auth'
 import { useHistory } from 'react-router-dom'
 
-import Table from '@mui/material/Table'
+import TableContainer from '@mui/material/TableContainer'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
+import Table from '@mui/material/Table'
 import Paper from '@mui/material/Paper'
 
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone'
 import PersonAddAlt1TwoToneIcon from '@mui/icons-material/PersonAddAlt1TwoTone'
-import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
-import LocalPhoneTwoToneIcon from '@mui/icons-material/LocalPhoneTwoTone'
 import RecentActorsTwoToneIcon from '@mui/icons-material/RecentActorsTwoTone'
-import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
-import EventTwoToneIcon from '@mui/icons-material/EventTwoTone'
+import LocalPhoneTwoToneIcon from '@mui/icons-material/LocalPhoneTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
+import EventTwoToneIcon from '@mui/icons-material/EventTwoTone'
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
+import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
+import ReplayTwoTone from '@mui/icons-material/ReplayTwoTone'
 
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 
 import { filterJobs } from 'views/index/components/list/events'
+import Info from 'components/info'
 import Item from './components/item'
 
 import Styles from './style.module.scss'
@@ -38,6 +40,9 @@ const JobsList: React.FC = () => {
 
 	// ESTADOS
 	const [jobs, setJobs] = useState<JobApply[]>([])
+
+	// ACTUALIZACIONES
+	const [updates, setUpdates] = useState<number>(0)
 
 	// MENU
 	const [menuAnchor, setMenuAnchor] = useState<HTMLButtonElement | null>(null)
@@ -56,7 +61,13 @@ const JobsList: React.FC = () => {
 	}
 
 	// ACEPTAR / RECHAZAR
-	const handleJobAccept = (accept: boolean) => () => sendJobAccept(history, accept, currentJob)
+	const handleJobAccept = (accept: boolean) => () => {
+		sendJobAccept(history, accept, currentJob)
+		handleClose()
+	}
+
+	// ACTUALIZAR
+	const addUpdate = () => setUpdates(updates + 1)
 
 	// MOSTRAR CV
 	const showCv = () => {
@@ -65,13 +76,20 @@ const JobsList: React.FC = () => {
 	}
 
 	// HOOKS
-	useJobs(setJobs, history, token?.uid)
+	useJobs(updates, setJobs, history, token?.uid)
 
 	// APLICAR FILTROS
 	const setFilter = (filter: keyof JobApply) => () => filterJobs(filter, setJobs)
 
 	return (
 		<div>
+			<Info
+				button='Recargar datos'
+				icon={<ReplayTwoTone />}
+				title='Postulaciones de trabajo'
+				buttonProps={{ onClick: addUpdate }}
+				body='Aqui puedes ver todas las postulaciones.'
+			/>
 			<TableContainer component={Paper} className={Styles.table}>
 				<Table stickyHeader>
 					<TableHead className={Styles.tHead}>
