@@ -1,14 +1,14 @@
-import express from 'express'
-import fileUpload from 'express-fileupload'
 import { JobApply, JobScore } from 'models/job'
-import OracleDB from 'oracledb'
-import { execute } from 'utils/db'
-import runSQL from 'utils/sql'
-import path from 'path'
 import sendError, { sendData } from 'utils/res'
+import fileUpload from 'express-fileupload'
+import AuthService from 'services/auth'
 import { UserData } from 'models/auth'
 import nodemailer from 'nodemailer'
-import AuthService from 'services/auth'
+import { execute } from 'utils/db'
+import OracleDB from 'oracledb'
+import runSQL from 'utils/sql'
+import express from 'express'
+import path from 'path'
 
 class JobService {
 	// GLOBALES
@@ -17,11 +17,15 @@ class JobService {
 
 	// CONSTRUCTOR
 	constructor() {
-		this.apiAccount = { user: '', pass: '' }
+		this.acceptApply = this.acceptApply.bind(this)
+		this.apiAccount = {
+			user: 'alexdsantosv@gmail.com',
+			pass: 'piqyiegvijooxiaz',
+		}
 		this.transporter = nodemailer.createTransport({
-			host: 'gmail',
-			port: 587,
-			secure: false,
+			host: 'smtp.gmail.com',
+			port: 465,
+			secure: true,
 			auth: this.apiAccount,
 		})
 	}
@@ -203,6 +207,13 @@ class JobService {
 		} else return sendError(res)
 	}
 
+	/**
+	 * Aceptar aplicaciones
+	 * @description Aceptar o rechazar aplicaciones de trabajo
+	 * @param req
+	 * @param res
+	 * @returns
+	 */
 	public async acceptApply(req: express.Request, res: express.Response) {
 		const job = req.body.job as JobApply
 		const user = req.body.user as UserData | undefined
@@ -212,61 +223,66 @@ class JobService {
 			// ERROR
 			let hasErr = false
 			const onError = (err: Error) => {
+				hasErr = true
 				if (!hasErr) {
-					hasErr = true
 					sendError(res, err)
 				}
 			}
 
 			// SELECCIONAR APPLY
 			const query = execute(
-				`SELECT * FROM JobsApply INNER JOIN JOBS ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.user_fk WHERE JobsApply.job_apply_id = ${job.applyId}`,
+				`SELECT * FROM JobsApply INNER JOIN JOBS ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.job_apply_id = ${job.applyId}`,
 			)
 			query.catch(onError)
 			const result = (await query) as OracleDB.Result<string>
 
 			// @ts-ignore
-			const jobApply = result[0] as string[]
+			const jobApply = result?.rows[0] as string[] | undefined
 			const password = Math.round(Math.random() * 10000).toString()
 
 			// ENVIAR CORREO
-			this.transporter.sendMail(
-				{
-					from: this.apiAccount.user,
-					to: jobApply[6],
-					subject: 'Totonet© | Jobs',
-					text: `Tu aplicacion para el puesto ${jobApply[12]} ha sido ${
-						accept ? 'Aceptada' : 'Rechazada'
-					}. ${
-						accept
-							? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[4]}\npassword: ${password}`
-							: ''
-					}`,
-				},
-				async (err, msg) => {
-					if (!hasErr) {
-						if (err) sendError(res)
-						else {
-							if (accept) {
-								// CREAR USUARIO
-								const userService = new AuthService()
-								await userService
-									.getUser(req, res, true, {
-										name: jobApply[4],
-										uid: user?.uid ?? 0,
-										password,
-										role: 'apply',
-										dateIn: new Date().toLocaleString('en-Gb'),
-									})
-									.catch(onError)
-							}
+			if (!hasErr) {
+				if (jobApply)
+					return this.transporter.sendMail(
+						{
+							from: this.apiAccount.user,
+							to: jobApply[6],
+							subject: 'Totonet© | Jobs',
+							text: `Tu aplicacion para el puesto ${jobApply[12]} ha sido ${
+								accept ? 'Aceptada' : 'Rechazada'
+							}. ${
+								accept
+									? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[4]}\npassword: ${password}`
+									: ''
+							}`,
+						},
+						async (err, msg) => {
+							if (!hasErr) {
+								if (err) {
+									return sendError(res, err)
+								} else {
+									if (accept) {
+										// CREAR USUARIO
+										const userService = new AuthService()
+										await userService
+											.getUser(req, res, true, {
+												name: jobApply[4],
+												uid: user?.uid ?? 0,
+												password,
+												role: 'apply',
+												dateIn: new Date().toLocaleString('en-Gb'),
+											})
+											.catch(onError)
+									}
 
-							// SALIR
-							if (!hasErr) sendData(res, { msg })
-						}
-					}
-				},
-			)
+									// SALIR
+									else if (!hasErr) return sendData(res, { msg })
+								}
+							}
+						},
+					)
+				else return sendError(res)
+			}
 		} else return sendError(res)
 	}
 }

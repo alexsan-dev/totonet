@@ -28,14 +28,18 @@ class AuthService {
 		customUser?: UserData,
 	) {
 		// DATA
-		const user = req.body.user ?? (customUser as UserData | undefined)
+		const user = (req.body.user ?? customUser) as UserData | undefined
 		let hasErr: boolean = false
 		if (user) {
 			// VALIDAR USUARIO
 			const query = (await execute(
 				isNew
-					? `INSERT INTRO Users (user_id, user_role, user_name, department_fk, password, dateIn) VALUES (
-					users_seq, ${user?.role}, ${user?.name}, (SELECT department_id FROM Departments WHERE department_name = '${user?.department}'), ${user?.password}, ${user?.dateIn}
+					? `INSERT INTO Users (user_id, user_role, user_name, department_fk, password, date_in, active) VALUES (
+					users_seq.nextval, '${user?.role}', '${user?.name}', ${
+							user?.department
+								? `(SELECT department_id FROM Departments WHERE department_name = '${user?.department}')`
+								: 'NULL'
+					  }, '${user?.password}', '${user?.dateIn}', 1
 					)`
 					: `SELECT user_id, user_role, password, active FROM Users WHERE user_name = '${user?.name}'`,
 			).catch((err) => {
