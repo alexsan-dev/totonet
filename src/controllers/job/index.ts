@@ -10,7 +10,6 @@ const jobController: Controller = (app) => {
 
 	// ENDPOINTS
 	app.get('/jobs', service.getJobs)
-
 	app.post('/jobs/apply', service.newApply)
 	app.put('/jobs/apply/:id', withAuth('recruiter'), service.acceptApply)
 	app.post('/jobs/apply/all', withAuth('recruiter'), service.getApps)

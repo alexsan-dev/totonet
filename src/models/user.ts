@@ -9,4 +9,4 @@ export interface User {
 	department: number
 }
 
-export type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter'
+export type UserRole = 'admin' | 'guest' | 'coord' | 'recruiter' | 'apply'

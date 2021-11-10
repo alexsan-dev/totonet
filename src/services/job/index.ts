@@ -8,7 +8,6 @@ import { execute } from 'utils/db'
 import OracleDB from 'oracledb'
 import runSQL from 'utils/sql'
 import express from 'express'
-import path from 'path'
 
 class JobService {
 	// GLOBALES
@@ -73,7 +72,7 @@ class JobService {
 			try {
 				filePath = `./storage/${file.name}`
 				file.mv(filePath)
-				filePath = path.resolve(filePath)
+				filePath = file.name
 			} catch {
 				hasErr = true
 			}
@@ -89,7 +88,7 @@ class JobService {
 
 				// OBTENER USUARIOS CON CVS
 				const usersQuery = execute(
-					'SELECT * FROM Users LEFT JOIN JobsApply ON JobsApply.user_fk = Users.user_id LEFT JOIN Departments ON Users.department_fk = Departments.department_id',
+					'SELECT * FROM Users RIGHT JOIN JobsApply ON JobsApply.user_fk = Users.user_id LEFT JOIN Departments ON Users.department_fk = Departments.department_id',
 				).catch(onError)
 				const query = (await usersQuery) as OracleDB.Result<unknown>
 
@@ -154,7 +153,7 @@ class JobService {
 							if (lastUser !== -1) {
 								// INSERTAR APPLY DE PUESTO
 								await execute(
-									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}')`,
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
 								).catch(onError)
 							} else {
 								hasErr = true
@@ -238,7 +237,7 @@ class JobService {
 
 			// @ts-ignore
 			const jobApply = result?.rows[0] as string[] | undefined
-			const password = Math.round(Math.random() * 10000).toString()
+			const password = Math.round(Math.random() * 1000000).toString()
 
 			// ENVIAR CORREO
 			if (!hasErr) {
@@ -273,6 +272,21 @@ class JobService {
 												dateIn: new Date().toLocaleString('en-Gb'),
 											})
 											.catch(onError)
+
+										// ULTIMO USUARIO
+										const userQuery = execute('SELECT COUNT(*) FROM Users')
+										userQuery.catch(onError)
+										const userResult =
+											(await userQuery) as OracleDB.Result<string>
+
+										// AGREGAR ESTADO
+										if (userResult.rows) {
+											const stateQuery = execute(
+												`INSERT INTO JobApplyStates VALUES (jobs_apply_state_seq.nextval, ${userResult.rows[0]}, ${job.applyId}, 'Aceptada')`,
+											)
+											stateQuery.catch(onError)
+											await stateQuery
+										}
 									}
 
 									// SALIR

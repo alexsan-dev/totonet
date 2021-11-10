@@ -109,9 +109,20 @@ CREATE TABLE JobsApply (
   CONSTRAINT job_apply_user_fk FOREIGN KEY (user_fk) REFERENCES Users (user_id)
 );
 
+CREATE TABLE JobApplyStates (
+  job_apply_state_id NUMBER NOT NULL,
+  user_fk NUMBER NOT NULL,
+  job_apply_fk NUMBER NOT NULL,
+  status VARCHAR2(250) NOT NULL,
+  PRIMARY KEY(job_apply_state_id),
+  CONSTRAINT job_apply_state_fk FOREIGN KEY (job_apply_fk) REFERENCES JobsApply (job_apply_id),
+  CONSTRAINT job_apply_user_state_fk FOREIGN KEY (user_fk) REFERENCES Users (user_id)
+);
+
 CREATE SEQUENCE users_seq START WITH 2 INCREMENT BY 1 CACHE 100;
 CREATE SEQUENCE jobs_apply_seq START WITH 1 INCREMENT BY 1 CACHE 100;
 CREATE SEQUENCE jobs_score_seq START WITH 1 INCREMENT BY 1 CACHE 100;
+CREATE SEQUENCE jobs_apply_state_seq START WITH 1 INCREMENT BY 1 CACHE 100;
 
 INSERT INTO Users VALUES ('admin', 'admin', 'admin', 1, 1, NULL, NULL, NULL);
 COMMIT;
