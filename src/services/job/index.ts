@@ -117,7 +117,7 @@ class JobService {
 					if (sortedJobs?.[0]?.[0])
 						await execute(
 							`INSERT INTO JobsApply VALUES (${+sortedJobs[0][0]}, ${
-								data.id
+								data.userId
 							}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${
 								data.lastName
 							}', '${data.email}', '${data.address}', '${
@@ -153,7 +153,7 @@ class JobService {
 							if (lastUser !== -1) {
 								// INSERTAR APPLY DE PUESTO
 								await execute(
-									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.id}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.userId}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
 								).catch(onError)
 							} else {
 								hasErr = true

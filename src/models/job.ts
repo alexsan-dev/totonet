@@ -1,5 +1,5 @@
 export interface JobApply {
-	id: number
+	userId: number
 	cui: number
 	name: string
 	lastName: string
@@ -9,6 +9,7 @@ export interface JobApply {
 	date: string
 	department: string
 	applyId?: number
+	cv?: string
 }
 
 export interface JobScore {

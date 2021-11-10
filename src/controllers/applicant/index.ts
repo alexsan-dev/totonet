@@ -10,6 +10,7 @@ const applyController: Controller = (app) => {
 
 	// ENDPOINTS
 	app.get('/apply/:id', withAuth('apply'), service.getJobs)
+	app.put('/apply/:id', withAuth('apply'), service.updateApply)
 }
 
 export default applyController
