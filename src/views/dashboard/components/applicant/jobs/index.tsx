@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper'
 import BorderColorTwoToneIcon from '@mui/icons-material/BorderColorTwoTone'
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone'
 import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone'
+import Grid3x3TwoToneIcon from '@mui/icons-material/Grid3x3TwoTone'
 import DomainTwoToneIcon from '@mui/icons-material/DomainTwoTone'
 import EventTwoToneIcon from '@mui/icons-material/EventTwoTone'
 import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
@@ -62,6 +63,10 @@ const ApplyJobsList: React.FC = () => {
 				<Table stickyHeader>
 					<TableHead className={Styles.tHead}>
 						<TableRow>
+							<TableCell align='left'>
+								<Grid3x3TwoToneIcon color='primary' />
+								Id
+							</TableCell>
 							<TableCell align='left' onClick={setFilter('name')}>
 								<WorkTwoToneIcon color='primary' />
 								Nombre del puesto
@@ -84,13 +89,13 @@ const ApplyJobsList: React.FC = () => {
 							</TableCell>
 							<TableCell align='left' onClick={setFilter('jobName')}>
 								<DescriptionTwoToneIcon color='primary' />
-								Requisitos
+								Requisitos del puesto
 							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{jobs?.map((job) => (
-							<Item key={job.date} job={job} />
+						{jobs?.map((job, index) => (
+							<Item key={job.date} job={job} index={index + 1} update={addUpdate} />
 						))}
 					</TableBody>
 				</Table>

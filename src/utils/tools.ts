@@ -32,16 +32,28 @@ const authFetch = async (
 	input: Request | string,
 	// eslint-disable-next-line no-undef
 	init?: RequestInit,
-	includeRole?: boolean
+	includeRole?: boolean,
+	isFormData?: boolean
 ): Promise<Response | null> => {
 	const cookie = parseCookie(document.cookie) as UserToken
 
 	// COOKIE
 	if (cookie.token?.length && cookie.role?.length) {
+		// FORM DATA
+		const formData = init?.body as FormData
+		if (isFormData) {
+			formData.append(
+				'user',
+				includeRole ? JSON.stringify({ role: cookie.role, uid: cookie.uid }) : ''
+			)
+		}
+
 		return fetch(input, {
 			...init,
 			headers: { ...init?.headers, authorization: cookie.token },
-			body: includeRole
+			body: isFormData
+				? formData
+				: includeRole
 				? init?.body
 					? JSON.stringify({
 							...JSON.parse(init?.body as string),

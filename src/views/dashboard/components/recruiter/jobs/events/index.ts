@@ -1,3 +1,4 @@
+import showWaitAlert from 'components/waitAlert'
 import { RouteComponentProps } from 'react-router'
 import authFetch from 'utils/tools'
 
@@ -14,6 +15,8 @@ const sendJobAccept = (
 	job?: JobApply
 ): void => {
 	if (job) {
+		showWaitAlert()
+
 		authFetch(
 			history,
 			`http://localhost:5000/jobs/apply/${job.applyId}`,
@@ -31,6 +34,8 @@ const sendJobAccept = (
 				if (data?.success)
 					window.Snack(`Puesto ${accept ? 'Aceptado' : 'Rechazado'} correctamente.`)
 				else window.Snack('Error al confirmar puesto')
+
+				window.hideAlert()
 			})
 			.catch((err) => window.Snack(err.toString()))
 	}
