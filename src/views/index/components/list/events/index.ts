@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react'
 
 /*
@@ -66,6 +67,7 @@ export const filterJobs = (
 		| React.Dispatch<React.SetStateAction<Job[]>>
 		| React.Dispatch<React.SetStateAction<JobApply[]>>
 ): void => {
+	// @ts-ignore
 	setJobs((jobs: unknown) => {
 		return [...(jobs as Job[])].sort((jobA, jobB) =>
 			typeof jobA[filter as keyof Job] === 'number'

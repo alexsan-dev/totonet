@@ -30,7 +30,7 @@ const showApplyForm = (currentJob?: Job): void => {
 		const file = (formData.cv as unknown as HTMLInputElement)?.files?.[0]
 		const data: JobApply = {
 			department: currentJob?.department,
-			id: currentJob?.id || 0,
+			userId: currentJob?.id || 0,
 			cui: +(formData.cui as unknown as HTMLInputElement)?.value,
 			name: (formData.name as unknown as HTMLInputElement)?.value,
 			lastName: (formData.lastName as unknown as HTMLInputElement)?.value,

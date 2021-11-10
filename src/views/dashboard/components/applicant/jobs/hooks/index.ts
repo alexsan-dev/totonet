@@ -15,35 +15,29 @@ const useJobs = (
 	useEffect(() => {
 		if (uid) {
 			// PETICION
-			authFetch(
-				history,
-				'http://localhost:5000/jobs/apply/all',
-				{
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ user: { uid } }),
-				},
-				true
-			)
+			authFetch(history, `http://localhost:5000/apply/${uid}`, {
+				method: 'GET',
+			})
 				.then((res) => res?.json())
 				.then((jobs) => {
 					if (jobs.success) {
-						const nextJobs: JobApply[] = (jobs?.data as string[])?.map((job) => ({
-							userId: +job[0],
-							cui: +job[3],
-							name: job[4],
-							lastName: job[5],
-							email: job[6],
-							address: job[7],
-							phone: job[8],
-							date: job[10],
-							jobName: job[12],
-							cv: job[9] as unknown as File,
-							applyId: +job[2],
-							department: '',
+						const newJobs: JobApply[] = (jobs?.data as string[])?.map((job) => ({
+							userId: +job[1],
+							cui: +job[7],
+							name: job[8],
+							lastName: job[9],
+							email: job[10],
+							address: job[11],
+							phone: job[12],
+							department: job[23],
+							date: job[14],
+							jobName: job[16],
+							applyId: +job[6],
+							cv: job[13] as unknown as File,
+							status: job[3],
 						}))
 
-						setJobs(nextJobs ?? [])
+						setJobs(newJobs ?? [])
 					} else window.Snack('Error al leer puestos.')
 				})
 				.catch((err) => window.Snack(err.toString()))

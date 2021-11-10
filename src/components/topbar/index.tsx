@@ -27,6 +27,7 @@ const userRoleName = {
 	coord: 'coordinador',
 	recruiter: 'reclutador',
 	guest: 'invitado',
+	apply: 'aplicante',
 }
 
 // LISTENER DE WINDOW PARA SCROLL
@@ -68,7 +69,7 @@ const Topbar: React.FC<TopBarProps> = ({ title, action }) => {
 							<img src={Logo} alt='Logo' />
 						</Link>
 						<Typography variant='h6' component='div'>
-							{title ?? `Dashboard de ${userRoleName[token?.role ?? 'admin']}`}
+							{title ?? `Dashboard de ${userRoleName?.[token?.role ?? 'admin']}`}
 						</Typography>
 						<div />
 						{action ?? (

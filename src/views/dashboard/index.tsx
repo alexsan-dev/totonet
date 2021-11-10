@@ -11,6 +11,9 @@ import UsersView from './components/admin/users'
 // SECCIONES DE REVISOR
 import JobsList from './components/recruiter/jobs'
 
+// SECCIONES DE APLICANTE
+import ApplyJobsList from './components/applicant/jobs'
+
 // ESTILOS
 import Styles from './style.module.scss'
 
@@ -31,6 +34,11 @@ const DashboardView: React.FC = () => {
 					(token?.role === 'recruiter' && (
 						<>
 							<JobsList />
+						</>
+					)) ||
+					(token?.role === 'apply' && (
+						<>
+							<ApplyJobsList />
 						</>
 					))}
 			</div>

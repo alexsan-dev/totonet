@@ -17,7 +17,7 @@ interface Requirement {
 }
 
 interface JobApply {
-	id: number
+	userId: number
 	cui?: number
 	name?: string
 	lastName?: string
@@ -29,6 +29,7 @@ interface JobApply {
 	jobName?: string
 	applyId?: number
 	cv?: File | Blob | null
+	status?: string
 }
 
 interface JobScore {

@@ -7,9 +7,12 @@ const showPDF = (job?: JobApply): void => {
 			body: '',
 			type: 'confirm',
 			customElements: (
-				<iframe title='cv' width='400' height='500' src={`file://${job.cv as unknown as string}`}>
-					<a href='./resources/crayola.pdf'>Download PDF</a>
-				</iframe>
+				<iframe
+					title='cv'
+					height={500}
+					width='100%'
+					src={`http://localhost:5000/storage/${job?.cv?.toString() ?? ''}`}
+				/>
 			),
 		})
 	}

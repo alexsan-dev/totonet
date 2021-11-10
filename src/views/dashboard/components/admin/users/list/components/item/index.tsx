@@ -15,6 +15,7 @@ const userRoleName = {
 	coord: 'Coordinador',
 	recruiter: 'Reclutador',
 	guest: 'Invitado',
+	apply: 'Aplicante',
 }
 
 const Item: React.FC<ItemProps> = ({ user, openMenu }) => {
