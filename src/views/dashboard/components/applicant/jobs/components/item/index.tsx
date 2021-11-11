@@ -5,6 +5,7 @@ import TableRow from '@mui/material/TableRow'
 import Button from '@mui/material/Button'
 import { useHistory } from 'react-router-dom'
 import showApplyForm from './components/form'
+import showReq from './components/requeriments'
 
 interface ItemProps {
 	job: JobApply
@@ -15,6 +16,9 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = ({ job, index, update }) => {
 	// HISTORY
 	const history = useHistory()
+
+	// ABRIR REQUISITOS
+	const openReq = () => showReq(update, job)
 
 	// ABRIR FORMULARIO
 	const openForm = () => {
@@ -35,7 +39,7 @@ const Item: React.FC<ItemProps> = ({ job, index, update }) => {
 				</Button>
 			</TableCell>
 			<TableCell align='left'>
-				<Button sx={{ width: 150 }} variant='outlined'>
+				<Button sx={{ width: 150 }} onClick={openReq} variant='outlined'>
 					Abrir requisitos
 				</Button>
 			</TableCell>

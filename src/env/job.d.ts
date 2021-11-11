@@ -1,5 +1,6 @@
 interface Job {
-	id: number
+	jobId: number
+	userId: number
 	name: string
 	score: number
 	salary: number
@@ -17,6 +18,7 @@ interface Requirement {
 }
 
 interface JobApply {
+	jobId: number
 	userId: number
 	cui?: number
 	name?: string

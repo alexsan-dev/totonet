@@ -35,6 +35,7 @@ const showApplyForm = (
 		const formData = (ev.target as HTMLFormElement).elements as unknown as JobApply
 		const file = (formData.cv as unknown as HTMLInputElement)?.files?.[0]
 		const data: JobApply = {
+			jobId: currentJob?.jobId ?? 0,
 			userId: currentJob?.userId || 0,
 			cui: +(formData.cui as unknown as HTMLInputElement)?.value,
 			name: (formData.name as unknown as HTMLInputElement)?.value,

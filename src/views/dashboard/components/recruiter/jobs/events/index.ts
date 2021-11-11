@@ -32,7 +32,7 @@ const sendJobAccept = (
 			.then((res) => res?.json())
 			.then((data) => {
 				if (data?.success)
-					window.Snack(`Puesto ${accept ? 'Aceptado' : 'Rechazado'} correctamente.`)
+					window.Snack(`Puesto ${accept ? 'aceptado' : 'rechazado'} correctamente.`)
 				else window.Snack('Error al confirmar puesto')
 
 				window.hideAlert()

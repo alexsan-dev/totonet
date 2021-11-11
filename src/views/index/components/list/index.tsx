@@ -128,7 +128,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs, setUpdate }) => {
 					</TableHead>
 					<TableBody>
 						{stateJobs?.map((job) => (
-							<Item key={job.id} job={job} openMenu={openMenu(job)} />
+							<Item key={job.userId} job={job} openMenu={openMenu(job)} />
 						))}
 					</TableBody>
 				</Table>

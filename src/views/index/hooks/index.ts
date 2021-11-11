@@ -15,21 +15,21 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>, updates: 
 					const newJobs: { [id: string]: Job } = {}
 					jobs?.data?.forEach((job: string[]) => {
 						// ASIGNAR PROPIEDADES
-						if (job[8] in newJobs) {
+						if (job[1] in newJobs) {
 							// INSERTAR CATEGORIAS
-							if (!newJobs[job[8] as string]?.categories.includes(job[15]))
-								newJobs[job[8] as string]?.categories.push(job[15])
+							if (!newJobs[job[1] as string]?.categories.includes(job[15]))
+								newJobs[job[1] as string]?.categories.push(job[15])
 
 							// INSERTAR REQUERIMIENTOS
-							const reqIndex = newJobs[job[8] as string]?.requirements.findIndex(
+							const reqIndex = newJobs[job[1] as string]?.requirements.findIndex(
 								(req) => req.name === job[20]
 							)
 							if (reqIndex >= 0) {
 								// INSERTAR FORMATOS
-								if (!newJobs[job[8] as string]?.requirements[reqIndex].formats.includes(job[27]))
-									newJobs[job[8] as string]?.requirements[reqIndex].formats.push(job[27])
+								if (!newJobs[job[1] as string]?.requirements[reqIndex].formats.includes(job[27]))
+									newJobs[job[1] as string]?.requirements[reqIndex].formats.push(job[27])
 							} else {
-								newJobs[job[8] as string]?.requirements.push({
+								newJobs[job[1] as string]?.requirements.push({
 									name: job[20],
 									size: +job[21],
 									required: +job[22] === 1,
@@ -39,8 +39,9 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>, updates: 
 						}
 						// CREAR
 						else
-							newJobs[job[8] as string] = {
-								id: +job[7],
+							newJobs[job[1] as string] = {
+								jobId: +job[1],
+								userId: +job[7],
 								name: job[8],
 								salary: +job[10],
 								image: job[9],
@@ -57,6 +58,7 @@ const useJobs = (setJobs: React.Dispatch<React.SetStateAction<Job[]>>, updates: 
 								],
 							}
 					})
+
 					setJobs(Object.values(newJobs))
 				} else window.Snack('Error al leer puestos.')
 			})

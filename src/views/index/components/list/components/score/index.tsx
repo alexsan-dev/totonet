@@ -24,7 +24,7 @@ const showScores = (
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ id: currentJob?.id ?? 0, score } as JobScore),
+				body: JSON.stringify({ id: currentJob?.userId ?? 0, score } as JobScore),
 			})
 				.then((res) => res?.json())
 				.then((resData) => {

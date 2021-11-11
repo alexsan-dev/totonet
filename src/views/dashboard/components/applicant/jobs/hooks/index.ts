@@ -22,6 +22,7 @@ const useJobs = (
 				.then((jobs) => {
 					if (jobs.success) {
 						const newJobs: JobApply[] = (jobs?.data as string[])?.map((job) => ({
+							jobId: +job[5],
 							userId: +job[1],
 							cui: +job[7],
 							name: job[8],
