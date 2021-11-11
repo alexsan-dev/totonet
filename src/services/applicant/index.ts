@@ -12,11 +12,27 @@ class ApplicantService {
 	 * @param res
 	 */
 	public async getJobs(req: express.Request, res: express.Response) {
-		const userId = req.params.id as unknown as number
+		const userId = req.params.userId as unknown as number
 		if (userId) {
 			return runSQL(
 				res,
 				`SELECT * FROM JobApplyStates INNER JOIN JobsApply ON JobApplyStates.job_apply_fk = JobsApply.job_apply_id INNER JOIN Jobs ON JobsApply.job_fk = Jobs.job_id INNER JOIN DepartmentJobs ON DepartmentJobs.job_fk = Jobs.job_id INNER JOIN Departments ON DepartmentJobs.department_fk = Departments.department_id WHERE JobApplyStates.user_fk = ${+userId}`,
+			)
+		} else sendError(res)
+	}
+
+	/**
+	 * Obtener requesitos
+	 * @description Obtener expedientes de postulacion por aplicante
+	 * @param req
+	 * @param res
+	 */
+	public async getRequirements(req: express.Request, res: express.Response) {
+		const applyId = req.params.id as unknown as number
+		if (applyId) {
+			return runSQL(
+				res,
+				`SELECT * FROM JobApplyReq INNER JOIN JobRequirements ON JobApplyReq.req_fk = JobRequirements.job_req_id INNER JOIN Requirements ON Requirements.requirement_id = JobRequirements.req_fk WHERE JobApplyReq.job_apply_fk = ${applyId}`,
 			)
 		} else sendError(res)
 	}
@@ -32,6 +48,7 @@ class ApplicantService {
 		// DATOS Y ARCHIVO
 		const data = JSON.parse(req.body.data ?? '{}') as JobApply
 		const file = req.files?.file as fileUpload.UploadedFile
+		const applyId = req.params.id as unknown as number
 
 		if (data) {
 			let hasErr: boolean = false
@@ -67,7 +84,7 @@ class ApplicantService {
 					apply_address = '${data.address}',
 					phone = '${data.phone}',
 					cv = '${filePath}'
-				 WHERE JobsApply.job_apply_id = ${data.applyId}`,
+				 WHERE JobsApply.job_apply_id = ${applyId}`,
 			).catch(onError)
 		} else return sendError(res)
 	}

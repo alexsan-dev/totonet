@@ -9,8 +9,9 @@ const applyController: Controller = (app) => {
 	const service = new ApplicantService()
 
 	// ENDPOINTS
-	app.get('/apply/:id', withAuth('apply'), service.getJobs)
+	app.get('/apply/:userId', withAuth('apply'), service.getJobs)
 	app.put('/apply/:id', withAuth('apply'), service.updateApply)
+	app.get('/apply/:id/requirements', withAuth('apply'), service.getRequirements)
 }
 
 export default applyController

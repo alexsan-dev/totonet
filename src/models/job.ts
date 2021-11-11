@@ -1,4 +1,5 @@
 export interface JobApply {
+	jobId: number
 	userId: number
 	cui: number
 	name: string

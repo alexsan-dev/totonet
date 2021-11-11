@@ -18,8 +18,8 @@ class JobService {
 	constructor() {
 		this.acceptApply = this.acceptApply.bind(this)
 		this.apiAccount = {
-			user: 'alexdsantosv@gmail.com',
-			pass: 'piqyiegvijooxiaz',
+			user: 'parchivos201602489@gmail.com',
+			pass: 'stmgkvescjfikbij',
 		}
 		this.transporter = nodemailer.createTransport({
 			host: 'smtp.gmail.com',
@@ -117,7 +117,7 @@ class JobService {
 					if (sortedJobs?.[0]?.[0])
 						await execute(
 							`INSERT INTO JobsApply VALUES (${+sortedJobs[0][0]}, ${
-								data.userId
+								data.jobId
 							}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${
 								data.lastName
 							}', '${data.email}', '${data.address}', '${
@@ -153,7 +153,7 @@ class JobService {
 							if (lastUser !== -1) {
 								// INSERTAR APPLY DE PUESTO
 								await execute(
-									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.userId}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
+									`INSERT INTO JobsApply VALUES (${lastUser}, ${data.jobId}, jobs_apply_seq.nextval, ${data.cui}, '${data.name}', '${data.lastName}', '${data.email}', '${data.address}', '${data.phone}', '${filePath}', '${data.date}')`,
 								).catch(onError)
 							} else {
 								hasErr = true
@@ -200,7 +200,7 @@ class JobService {
 			if (user.uid) {
 				return runSQL(
 					res,
-					`SELECT * FROM JobsApply INNER JOIN JOBS ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.user_fk = ${+user.uid}`,
+					`SELECT * FROM JobsApply INNER JOIN Jobs ON JobsApply.job_fk = Jobs.job_id WHERE JobsApply.user_fk = ${+user.uid}`,
 				)
 			} else return sendError(res)
 		} else return sendError(res)
@@ -246,18 +246,15 @@ class JobService {
 						{
 							from: this.apiAccount.user,
 							to: jobApply[6],
-							subject: 'Totonet© | Jobs',
-							text: `Tu aplicacion para el puesto ${jobApply[12]} ha sido ${
-								accept ? 'Aceptada' : 'Rechazada'
-							}. ${
-								accept
-									? `Estas son tus credenciales para poder ingresar a la plataforma:\nusuario: ${jobApply[3]}\npassword: ${password}`
-									: ''
+							subject: 'Proyecto01',
+							text: `${
+								accept ? `\nusuario: ${jobApply[3]}\npass: ${password}` : ''
 							}`,
 						},
 						async (err, msg) => {
 							if (!hasErr) {
 								if (err) {
+									console.log(err)
 									return sendError(res, err)
 								} else {
 									if (accept) {
@@ -286,6 +283,27 @@ class JobService {
 											)
 											stateQuery.catch(onError)
 											await stateQuery
+
+											// OBTENER REQUERIMIENTOS
+											const jobReqQuery = execute(
+												`SELECT * FROM JobRequirements WHERE JobRequirements.job_fk = ${job.jobId}`,
+											)
+											jobReqQuery.catch(onError)
+											const jobReqResult =
+												(await jobReqQuery) as OracleDB.Result<string>
+
+											if (jobReqResult.rows) {
+												const applyReq = jobReqResult.rows.map(async (row) => {
+													// AGREGAR REQUERIMIENTOS
+													const reqQuery = execute(
+														`INSERT INTO JobApplyReq VALUES (jobs_apply_req_state_seq.nextval, ${job.applyId}, ${row[0]}, NULL)`,
+													)
+													reqQuery.catch(onError)
+													await reqQuery
+												})
+
+												await Promise.all(applyReq)
+											}
 										}
 									}
 
